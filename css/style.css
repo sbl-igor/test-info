@@ -1,0 +1,826 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Main props */
+
+body {
+    font-family: 'Roboto';
+    color: #49454F;
+    background-color: #F5F5F5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Manrope';
+}
+
+.container {
+    max-width: 1430px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.main-info-title-text {
+    margin-bottom: 92px;
+}
+
+.main-info-title-text__title {
+    font-family: 'Jura';
+    font-weight: 600;
+    color: #F76817;
+    text-transform: lowercase;
+    font-size: 50px;
+}
+
+.main-info-title-text__text {
+    font-family: 'Manrope';
+    font-weight: 500;
+    font-size: 70px;
+    letter-spacing: 1.15;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.10);
+}
+
+.main-parag {
+    font-family: 'Manrope';
+    font-weight: 700;
+    font-size: 50px;
+    color: #F76817;
+    letter-spacing: 1.5;
+    margin: 120px 0 120px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.10);
+}
+
+/* header */
+
+.header {
+    padding: 35px 0 15px;
+    position: relative;
+}
+
+.logo {
+    width: 242.25px;
+    height: 85px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-menu-list {
+    display: flex;
+    gap: 65px;
+    color: #49454F;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 20px;
+    padding-bottom: 30px;
+}
+
+.header-open-section, .header-catalog-section, .header-services-section {
+    background-image: url('../img/opening/back-open.png');
+    background-size: 100% 100%; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 150px 75px;
+}
+
+.header-open-section__img {
+    max-width: 671px;
+    max-height: 656px;
+}
+
+.header-open-section__info {
+    max-width: 45%;
+}
+
+.header-open-section__info-parag {
+    font-size: 50px;
+    font-weight: 600;
+    color: #FFF;
+    margin-bottom: 50px;
+}
+
+.header-open-section__info-parag, .header-open-section__info-text {
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.header-open-section__info-text {
+    font-size: 35px;
+    font-weight: 600;
+    color: #FFF;
+    margin-bottom: 50px;
+}
+
+.header-open-section__info-link {
+    color: #F76817;
+    background-color: #FFFFFF;
+    padding: 25px 60px;
+    font-size: 40px;
+    border-radius: 30px;
+    letter-spacing: 12%;
+    text-transform: uppercase;
+}
+
+.header-open-section__info-link span {
+    text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.10);
+}
+
+/* MAIN */
+
+.advantages .main-info-title-text {
+    max-width: 60%;
+}
+
+.advantages {
+    margin: 20px 0;
+    padding: 125px 0 110px;
+}
+
+.advantages-cards {
+    font-family: 'Manrope';
+    font-weight: 500;
+    display: flex;
+    gap: 20px;
+}
+
+.advantages-cards__item {
+    width: 490px;
+    border: 5px solid #F76817;
+    padding: 115px 30px 20px;
+    box-shadow: 10px 5px 15px rgba(247, 104, 23, 0.5);
+    border-radius: 15px; 
+}
+
+.advantages-cards__item-parag {
+    font-size: 26px;
+    margin-bottom: 72px;
+    position: relative;
+}
+
+.advantages-cards__item-parag:after {
+    content: url('../img/opening/line.svg');
+    width: 220px;
+    position: absolute;
+    left: 0;
+    bottom: -45px;
+}
+
+.advantages-cards__item-underparag {
+    font-size: 22px;
+    margin-bottom: 30px;
+}
+
+.advantages-cards__item-parag, .advantages-cards__item-underparag {
+    text-transform: uppercase;
+}
+
+.advantages-cards__item-list, .advantages-cards__item-title-list {
+    line-height: 1.7;
+    font-size: 22px;
+}
+
+ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
+    list-style: disc;
+}
+
+.advantages-cards__item-list-li {
+    margin-left: 35px;
+}
+
+/* choises-circles */
+
+.choises {
+    margin: 20px 0;
+}
+
+.choises-circles {
+    position: relative;
+    height: auto;
+    padding: 220px 0;
+}
+
+.choises-circles-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 60%;
+    aspect-ratio: 1 / 1;
+    border: 2px dashed #F76817;
+    border-radius: 100%;
+}
+
+.choises-circles-link-main {
+    position: absolute;
+    left: 35px;
+    bottom: 60px;
+}
+
+.choises-circles-link-main__link {
+    position: relative;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 25px;
+    color: #F76817;
+}
+
+.choises-circles-link-main__link:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px; 
+    top: 50%;
+    margin-left: 20px;
+    transform: translateY(-50%);
+    background-image: url('../img/arrow-orange.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.choises-circles__cont {
+    position: relative;
+    display: flex;
+}
+
+.choises-circles__cont-circle {
+    position: relative;
+    width: 454px;
+    height: 454px;
+    border: 3px solid #F76817;
+    border-radius: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding-left: 80px;
+    background-color: #F5F5F5;
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.25);
+}
+
+.choises-circles__cont-circle:first-child {
+    left: 35px;
+    z-index: 10;
+}
+
+.choises-circles__cont-circle:nth-child(2) {
+    z-index: 5;
+}
+
+.choises-circles__cont-circle:last-child {
+    right: 35px;
+    z-index: 1;
+}
+
+.choises-circles__cont-circle-num {
+    font-weight: 700;
+    font-size: 28px;
+    color: #F76817;
+    margin-bottom: 8px;
+}
+
+.choises-circles__cont-circle-parag {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.choises-circles__cont-circle-num, .choises-circles__cont-circle-parag, .choises-circles__cont-circle-link {
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.choises-circles__cont-circle-link {
+    font-size: 22px;
+    font-weight: 300;
+    position: relative;
+}
+
+.choises-circles__cont-circle-link:after {
+    content: "";
+    position: absolute;
+    width: 70px;
+    height: 10px; 
+    top: 50%;
+    margin-left: 20px;
+    transform: translateY(-50%);
+    background-image: url('../img/arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* gradient-block */
+
+.gradient-block {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px; 
+    /* transform: rotate(45deg); */
+}
+
+.gradient-block__center {
+    position: absolute;
+    z-index: -3;
+    width: 100%; 
+    height: 80px; 
+    background: linear-gradient(
+        rgba(255, 157, 71, 0.8) 0%,  
+        rgba(255, 157, 71, 0) 100%   
+    );
+    filter: blur(100px); 
+    border-radius: 50px; /* Делаем мягкий изгиб */
+}
+
+.gradient-block__center.advantages-grad {
+    transform: rotate(-10.5deg);
+}
+
+/* about-us-main */
+
+.about-us-main {
+    margin-bottom: 250px;
+}
+
+.about-us-main-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 110px;
+}
+
+.about-us-main-cards__item {
+    display: flex;
+    gap: 80px;
+}
+
+.about-us-main-cards__item-img {
+    width: 660px;
+    border-radius: 375px 375px 0 0;
+    box-shadow: 0 10px 80px rgba(255, 157, 71, 1);
+}
+
+.about-us-main-cards__item-info {
+    width: 580px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-us-main-cards__item-info-title {
+    font-weight: 600;
+    font-size: 52px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+.about-us-main-cards__item-text {
+    font-size: 24px;
+}
+
+.about-us-main-cards__item:nth-child(2n) {
+    flex-direction: row-reverse;
+}
+
+/* footer */
+
+.footer {
+    position: relative;
+    color: #FFF;
+    background-color: #FF9D47;
+    padding: 65px 0;
+    overflow: hidden;
+}
+
+.footer-shadow {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20%;
+    height: 40%;
+    background: radial-gradient(
+        circle, 
+        rgb(235, 57, 34) 100%,    /* Центр градиента */
+        rgba(248, 60, 35, 0) 100%   /* Края градиента (полностью прозрачный) */
+    );
+
+    filter: blur(80px); 
+}
+
+.footer-logo-nav__logo {
+    font-family: "Jura";
+    font-weight: 600;
+    font-size: 45px;
+}
+
+.footer-logo-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.footer-logo-nav__nav {
+    font-family: 'Roboto';
+    font-size: 26px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.footer-logo-nav__nav-list {
+    display: flex;
+    gap: 124px;
+}
+
+.footer-logo-nav__nav-list-li {
+    position: relative;
+}
+
+.footer-logo-nav__nav-list-li:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -62px;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 30px;
+    background-color: #FFF;
+}
+
+.footer-logo-nav__nav-list-li:last-child::after {
+    width: 0;
+    height: 0;
+}
+
+.footer-description {
+    width: 55%;
+    font-size: 26px;
+}
+
+/* CATALOG_PAGE */
+
+.header-catalog-section, .header-services-section {
+    color: #FFF;
+}
+
+.header-catalog-section__info, .header-services-section__info {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-catalog-section__info-parag, .header-services-section__info-parag {
+    font-size: 55px;
+    margin-bottom: 160px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header-catalog-section__info-text, .header-services-section__info-text {
+    text-align: right;
+    width: 80%;
+    align-self: self-end;
+    font-size: 40px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* CATALOG_PAGE consultations */
+
+.consultations-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.consultations-cards__item {
+    width: calc(50% - 15px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 35px 20px 54px;
+    border: 1px solid #f68e51;
+    border-radius: 30px;
+    background-color: #F5F5F5;
+}
+
+.consultations-cards__item-num {
+    margin-bottom: 10px;
+}
+
+.consultations-cards__item-num, .consultations-cards__item-parag {
+    font-size: 38px;
+}
+
+/* CATALOG_PAGE chat-bots */
+
+.chat-bots .main-parag {
+    text-align: right;
+    font-family: "Roboto";
+}
+
+.chat-bots_buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px 70px;
+    justify-content: space-evenly;
+}
+
+.chat-bots_buttons-item-link {
+    font-weight: 300;
+    font-size: 35px;
+    padding: 6px 70px;
+    background-color: #FFF;
+    border: 1px solid #F76817;
+    border-radius: 30px;
+}
+
+/* CATALOG_PAGE education */
+
+.education-cards-swiper {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.education-cards-swiper__wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+
+.education-cards-swiper__list {
+    display: flex;
+    gap: 50px;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.education-cards-swiper__btn {
+    background-color: #FD9A5A;
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.education-cards-swiper__btn:hover {
+    background-color: #E93A15;
+}
+
+.prev {
+    margin-right: 10px;
+}
+
+.next {
+    margin-left: 10px;
+}
+
+
+.education-cards-swiper__item {
+    width: 300px;
+    min-width: calc(30% - 50px);
+    height: 340px;
+    background: linear-gradient(135deg,  
+        #FFA413 0%,   /* Желтый */
+        #FD9A5A 50%,  /* Оранжевый */
+        #E93A15 100%  /* Красный */
+    );
+    padding: 40px 28px 50px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.education-cards-swiper__item-icon {
+    width: 105px;
+    margin-bottom: 30px;
+}
+
+.education-cards-swiper__item-parag {
+    font-family: 'Roboto';
+    font-size: 32px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* CATALOG_PAGE support */
+
+.support-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 55px;
+    margin-bottom: 150px;
+}
+
+.support-cards__item {
+    width: 90%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    border: 2px solid #f68e51;
+    background-color: #F5F5F5;
+    border-radius: 20px;
+}
+
+.support-cards__item-parag {
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.support-cards__item-icon {
+    width: 100px;
+    height: 100px;
+}
+
+.support-cards__item:last-child .support-cards__item-parag {
+    margin-bottom: 50px;
+}
+
+.support-cards__item-min-parag {
+    margin-bottom: 42px;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.support-cards__item-min-parag:last-child {
+    margin-bottom: 0;
+}
+
+/* SERVICES-PAGE advantages-work-list */
+
+.advantages-work-list {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 30px;
+}
+
+.advantages-work-list__item {
+    display: flex;
+    font-size: 34px;
+    text-transform: uppercase;
+    justify-content: space-between;
+    gap: 30px;
+    max-height: 280px;
+    align-items: stretch;
+}
+
+.advantages-work-list__item-line {
+    display: flex;
+    margin-left: auto;
+    margin-top: 20px;
+}
+
+.advantages-work-list__item:nth-child(2n) .advantages-work-list__item-line {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.advantages-work-list__item-info {
+    width: 50%;
+    border: 3px solid #F76817;
+    border-radius: 30px;
+    padding: 60px 55px;
+    background-color: #F5F5F5;
+}
+
+.advantages-work-list__item-info-text span {
+    color: #F76817;
+}
+
+.advantages-work-list__item:nth-child(2n) {
+    flex-direction: row-reverse;
+}
+
+.advantages-work-list__item:last-child {
+    justify-content: flex-end;
+}
+
+/* SERVICES-PAGE price-policy */
+
+.price-policy .main-parag {
+    text-align: right;
+}
+
+.price-policy__content-cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 55px;
+    color: #FFF;
+    margin-bottom: 135px;
+}
+
+.price-policy__content-cards-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 28%;
+    height: 450px;
+    padding: 38px 75px 90px;
+    background-image: url(../img/back-card.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.price-policy__content-cards-parag {
+    font-size: 50px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 40px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.price-policy__content-cards-text {
+    font-size: 26px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.price-policy__content-slogan {
+    display: flex;
+    gap: 120px;
+    align-items: center;
+}
+
+.price-policy__content-slogan-parag {
+    font-size: 50px;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.30);
+    text-transform: uppercase;
+}
+
+.price-policy__content-slogan-link {
+    color: #FFF;
+    background: linear-gradient(135deg,  
+        #FFA413 0%,   /* Желтый */
+        #FD9A5A 30%,  /* Оранжевый */
+        #E93A15 100%  /* Красный */
+    );
+    border-radius: 20px;
+    text-transform: uppercase;
+    padding: 12px 30px;
+    font-size: 65px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* SERVICES-PAGE faq */
+
+.faq-box__item-question {
+    font-size: 45px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    margin-right: 30%;
+    margin-bottom: 75px;
+}
+
+.faq-box__item-question:before {
+    content: '';
+    display: inline-block; /* Или block */
+    min-width: 35px;
+    max-height: 35px;
+    width: 35px;
+    height: 35px;
+    border: 2px solid #F76817;
+    border-radius: 100%;
+    margin-right: 40px; /* Чтобы отступить от текста */
+    vertical-align: middle; /* Центрирование по тексту */
+    box-sizing: border-box;
+}
+
+.faq-box__item-responde {
+    display: flex;
+    align-items: center;
+    padding: 82px 200px 82px 90px;
+    width: 1225px;
+    height: 354px;
+    background-image: url(../img/card-question-back.svg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-size: 30px;
+    text-transform: uppercase;
+    margin-left: auto;
+    margin-bottom: 120px;
+}
+
+.faq-box__item-responde-text {
+    /* max-width: 70%; */
+}
