@@ -1232,6 +1232,7 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     font-size: 38px;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .main-product:hover {
