@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy page</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/media.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
     <header class="header">
@@ -12,56 +16,71 @@
         </section> -->
         <div class="container">
             <section class="header-section">
-                <img src="./img/logo.svg" alt="logo.svg" class="logo">
+                <a href="index.html">
+                    <img src="./img/logo.svg" alt="logo.svg" class="logo">
+                </a>
+                <h2 class="footer-logo-nav__logo logo-nav">
+                    <a href="index.html">IT-РЕШЕНИЯ 360</a>
+                </h2>
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
                 <nav class="nav-menu">
                     <ul class="nav-menu-list">
-                        <li class="nav-menu-list__item"><a href="#">ГЛАВНАЯ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">УСЛУГИ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">КАТАЛОГ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">О нас</a></li>
-                        <li class="nav-menu-list__item"><a href="#">Контакты</a></li>
+                        <li class="nav-menu-list__item"><a href="index.html">ГЛАВНАЯ</a></li>
+                        <li class="nav-menu-list__item"><a href="services.html">УСЛУГИ</a></li>
+                        <li class="nav-menu-list__item"><a href="catalog.html">КАТАЛОГ</a></li>
+                        <li class="nav-menu-list__item"><a href="about-us.html">О нас</a></li>
+                        <li class="nav-menu-list__item"><a href="contacts.html">Контакты</a></li>
                     </ul>
                 </nav>
-            </section>
-            <section class="header-catalog-section">
-                <div class="header-catalog-section__info">
-                    <h1 class="header-catalog-section__info-parag">
-                        Всё, что нужно для вашего бизнеса
-                    </h1>
-                    <p class="header-catalog-section__info-text">
-                        Мы собрали полный спектр услуг, чтобы помочь вам работать быстрее, эффективнее и комфортнее. Выберите категорию и найдите решение, подходящее именно вам
-                    </p>
-                </div>
             </section>
         </div>
     </header>
 
-
     <main class="main">
-        <img src="" alt="" class="buy-container">
-        <h1 class="buy__parag"></h1>
-        <p class="buy__description"></p>
-        <button class="main-product"></button>
+        <section data-aos="flip-left" class="buy-area">
+            <div class="container">
+                <!-- <section class="gradient-block">
+                    <div class="gradient-block__center"></div>
+                </section> -->
+                <div class="buy-area__img-cont">
+                    <img src="" alt="" class="buy-img">
+                </div>
+                <div class="buy-area__info-cont">
+                    <h1 class="buy__parag"></h1>
+                    <p class="buy__description"></p>
+                    <button class="main-product">Купить!</button>
+                </div>
+            </div>
+        </section>
+        <section class="gradient-block">
+            <div class="gradient-block__center"></div>
+    </section>
     </main>
 
     <footer class="footer">
         <div class="footer-shadow"></div>
         <div class="container">
             <div class="footer-logo-nav">
-                <h2 class="footer-logo-nav__logo">IT-РЕШЕНИЯ 360</h2>
+                <h2 class="footer-logo-nav__logo">
+                    <a href="index.html">IT-РЕШЕНИЯ 360</a>
+                </h2>
                 <nav class="footer-logo-nav__nav">
                     <ul class="footer-logo-nav__nav-list">
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">УСЛУГИ</a>
+                            <a href="services.html" class="footer-logo-nav__nav-list-link">УСЛУГИ</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">КАТАЛОГ</a>
+                            <a href="catalog.html" class="footer-logo-nav__nav-list-link">КАТАЛОГ</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">О нас</a>
+                            <a href="about-us.html" class="footer-logo-nav__nav-list-link">О нас</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">Контакты</a>
+                            <a href="contacts.html" class="footer-logo-nav__nav-list-link">Контакты</a>
                         </li>
                     </ul>
                 </nav>
@@ -73,5 +92,9 @@
             </div>
         </div>
     </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/burger.js"></script>
+    <script src="./js/products.js"></script>
 </body>
 </html>

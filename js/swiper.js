@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function slide(direction) {
         index += direction;
-        swiperList.style.transition = "transform 0.3s ease-in-out";
+        swiperList.style.transition = "transform 0.5s ease";
         swiperList.style.transform = `translateX(-${index * itemWidth}px)`;
 
         setTimeout(() => {

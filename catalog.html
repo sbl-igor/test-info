@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/media.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
     <header class="header">
@@ -15,14 +16,24 @@
         </section> -->
         <div class="container">
             <section class="header-section">
-                <img src="./img/logo.svg" alt="logo.svg" class="logo">
+                <a href="index.html">
+                    <img src="./img/logo.svg" alt="logo.svg" class="logo">
+                </a>
+                <h2 class="footer-logo-nav__logo logo-nav">
+                    <a href="index.html">IT-РЕШЕНИЯ 360</a>
+                </h2>
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
                 <nav class="nav-menu">
                     <ul class="nav-menu-list">
-                        <li class="nav-menu-list__item"><a href="#">ГЛАВНАЯ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">УСЛУГИ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">КАТАЛОГ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">О нас</a></li>
-                        <li class="nav-menu-list__item"><a href="#">Контакты</a></li>
+                        <li class="nav-menu-list__item"><a href="index.html">ГЛАВНАЯ</a></li>
+                        <li class="nav-menu-list__item"><a href="services.html">УСЛУГИ</a></li>
+                        <li class="nav-menu-list__item"><a href="catalog.html">КАТАЛОГ</a></li>
+                        <li class="nav-menu-list__item"><a href="about-us.html">О нас</a></li>
+                        <li class="nav-menu-list__item"><a href="contacts.html">Контакты</a></li>
                     </ul>
                 </nav>
             </section>
@@ -42,92 +53,92 @@
     <main class="main">
         <section class="consultations">
             <div class="container">
-                <h2 class="main-parag">Консультации</h2>
-                <div class="consultations-cards">
-                    <div class="consultations-cards__item">
+                <h2 data-aos="fade-up" class="main-parag">Консультации</h2>
+                <div data-aos="fade-up" class="consultations-cards">
+                    <div class="consultations-cards__item item-for-buying" data-id="1">
                         <div class="consultations-cards__item-box">
                             <h3 class="consultations-cards__item-num">01</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«Google Документы»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="2">
                         <div class="consultations-cards__item-box">
                             <h3 class="consultations-cards__item-num">02</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«Облако Mail.ru»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="3">
                         <div class="consultations-cards__item-box">
                             <h3 class="consultations-cards__item-num">03</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«CamScanner»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="4">
                         <div class="consultations-cards__item-box">
                             <h3 class="consultations-cards__item-num">04</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«DocuSign»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="5">
                         <div class="consultations-cards__item-box">
                             <h3 class="consultations-cards__item-num">05</h3>
-                            <h4 class="consultations-cards__item-parag">«CamScanner»</h4>
-                        </div>
-                        <div class="consultations-cards__item-arrow">
-                            <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
-                        </div>
-                    </div>
-                    <div class="consultations-cards__item">
-                        <div class="consultations-cards__item-box">
-                            <h3 class="consultations-cards__item-num">06</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«Wrike»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="6">
                         <div class="consultations-cards__item-box">
-                            <h3 class="consultations-cards__item-num">07</h3>
+                            <h3 class="consultations-cards__item-num">06</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«Google Календарь»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="7">
                         <div class="consultations-cards__item-box">
-                            <h3 class="consultations-cards__item-num">08</h3>
+                            <h3 class="consultations-cards__item-num">07</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«КонсультантПлюс»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="8">
                         <div class="consultations-cards__item-box">
-                            <h3 class="consultations-cards__item-num">09</h3>
+                            <h3 class="consultations-cards__item-num">08</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«Мой налог»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
                             <img src="./img/arrow-gris.svg" alt="arrow-gris" class="consultations-cards__item-arrow-img">
                         </div>
                     </div>
-                    <div class="consultations-cards__item">
+                    <div class="consultations-cards__item item-for-buying" data-id="9">
                         <div class="consultations-cards__item-box">
-                            <h3 class="consultations-cards__item-num">10</h3>
+                            <h3 class="consultations-cards__item-num">09</h3>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
                             <h4 class="consultations-cards__item-parag">«Личный кабинет предпринимателя»</h4>
                         </div>
                         <div class="consultations-cards__item-arrow">
@@ -141,56 +152,56 @@
 
         <section class="chat-bots">
             <div class="container">
-                <h2 class="main-parag">создание чат бота</h2>
+                <h2 data-aos="fade-up" class="main-parag">создание чат бота<br><span>текстовая консультация</span></h2>
                 <div class="chat-bots_buttons">
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="10">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для кафе
+                            "кафе"
                         </a>
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="11">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для магазина
+                            "магазин"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="19">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для психолога
+                            "психолог"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="13">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для автомойки
+                            "автомойка"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="14">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для юриста
+                            "юриста"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="12">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для кинотеатра
+                            "кинотеатр"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="18">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для информатора
+                            "информатор"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="15">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для астролога
+                            "астролог"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="16">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для продавца
+                            "продавец"
                         </a> 
                     </div>
-                    <div class="chat-bots_buttons-item">
+                    <div class="chat-bots_buttons-item item-for-buying" data-id="17">
                         <a href="#" class="chat-bots_buttons-item-link">
-                            для лидогенерации
+                            "лидогенерация"
                         </a> 
                     </div>
                 </div>
@@ -199,45 +210,54 @@
 
         <section class="education">
             <div class="container">
-                <h2 class="main-parag">обучение</h2>
+                <h2 data-aos="fade-up" class="main-parag">обучение</h2>
                 <div class="education-cards-swiper">
                     <button class="education-cards-swiper__btn prev">←</button>
                     <div class="education-cards-swiper__wrapper">
                         <div class="education-cards-swiper__list">
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="20">
                                 <img src="./img/icons/education-cards/google.svg" alt="google">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">Google Документы</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="24">
                                 <img src="./img/icons/education-cards/wrike.svg" alt="wrike">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">Wrike</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="21">
                                 <img src="./img/icons/education-cards/mail.svg" alt="mail">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">Облако Mail.ru</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="22"> 
                                 <img src="./img/icons/education-cards/cs.svg" alt="cs">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">CamScanner</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="25">
                                 <img src="./img/icons/education-cards/calendar.svg" alt="calendar">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">Google Календарь</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="28">
                                 <img src="./img/icons/education-cards/personal.svg" alt="personal">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">Личный кабинет предпринимателя</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="26">
                                 <img src="./img/icons/education-cards/consul.svg" alt="consul">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">Консультант Плюс</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="27">
                                 <img src="./img/icons/education-cards/moi-nalog.svg" alt="moi-nalog">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">Мой налог</h4>
                             </div>
-                            <div class="education-cards-swiper__item">
+                            <div class="education-cards-swiper__item item-for-buying" data-id="23">
                                 <img src="./img/icons/education-cards/docS.svg" alt="docS">
+                                <p class="consultations-text-ep">текстовая консультация по</p>
                                 <h4 class="education-cards-swiper__item-parag">DocuSign</h4>
                             </div>
                         </div>
@@ -250,42 +270,185 @@
         <section class="support">
         <div class="gradient-block__center advantages-grad"></div>
             <div class="container">
-                <h2 class="main-parag">Техническая поддержка и рассылки</h2>
-                <div class="support-cards">
-                    <div class="support-cards__item">
+                <h2 data-aos="fade-up" class="main-parag">Техническая поддержка и рассылки<br><span>текстовая консультация</span></h2>
+                <div data-aos="fade-right" class="support-cards">
+                    <div class="support-cards__item item-for-buying" data-id="29">
                         <h3 class="support-cards__item-parag">техническое сопровождение рабочего места</h3>
                         <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
                     </div>  
-                    <div class="support-cards__item">
+                    <div class="support-cards__item item-for-buying" data-id="30">
                         <h3 class="support-cards__item-parag">настройка ошибок ПО</h3>
                         <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
                     </div>  
-                    <div class="support-cards__item">
+                    <div class="support-cards__item item-for-buying" data-id="31">
                         <h3 class="support-cards__item-parag">оптимизация информационной сети предприятия</h3>
                         <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
                     </div>  
-                    <div class="support-cards__item">
+                    <div class="support-cards__item item-for-buying" data-id="32">
                         <h3 class="support-cards__item-parag">исправление ошибок ПО</h3>
                         <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
                     </div>  
-                    <div class="support-cards__item">
+                    <div class="support-cards__item item-for-buying" data-id="33">
                         <h3 class="support-cards__item-parag">предоставление услуги по восстановлению компьютера после сбоя</h3>
                         <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
                     </div>  
-                    <div class="support-cards__item">
+                    <div class="support-cards__item item-for-buying" data-id="34">
                         <h3 class="support-cards__item-parag">создание триггерных email-рассылок</h3>
                         <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
                     </div>  
-                    <div class="support-cards__item">
-                        <div class="support-cards__item-box">
-                            <h3 class="support-cards__item-parag">создание email-рассылок</h3>
-                            <h4 class="support-cards__item-min-parag">контентные email-рассылки</h4>
-                            <h4 class="support-cards__item-min-parag">товарнык email-рассылки</h4>
-                            <h4 class="support-cards__item-min-parag">транзакционные email-рассылки</h4>
-                            <h4 class="support-cards__item-min-parag">транзакционные email-рассылки</h4>
-                        </div>
+                    <div class="support-cards__item item-for-buying" data-id="35">
+                        <h3 class="support-cards__item-parag">создание контентных email-рассылок</h3>
                         <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
                     </div>  
+                    <div class="support-cards__item item-for-buying" data-id="36">
+                        <h3 class="support-cards__item-parag">создание товарных email-рассылок</h3>
+                        <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
+                    </div>  
+                    <div class="support-cards__item item-for-buying" data-id="37">
+                        <h3 class="support-cards__item-parag">создание транзакционных email-рассылок</h3>
+                        <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
+                    </div>  
+                    <div class="support-cards__item item-for-buying" data-id="38">
+                        <h3 class="support-cards__item-parag">обучение сотрудника по работе на ПК</h3>
+                        <img src="./img/icons/icon-card.svg" alt="icon-card" class="support-cards__item-icon">
+                    </div>  
+                </div>
+            </div>
+        </section>
+        <section class="development">
+            <div class="container">
+                <h2 data-aos="fade-up" class="main-parag">Разработка и IT-инфраструктура</h2>
+                <div data-aos="fade-up" class="development-cards">
+                    <div class="development-cards__item item-for-buying" data-id="39">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/on-shop.png" alt="on-shop" class="development-cards__item-up-circle-img">
+                            </div>
+                            <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"создание интернет магазина"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Разработаем удобный и функциональный интернет-магазин под ваши задачи.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="40">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/antivirus.png" alt="antivirus" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"отслеживание работоспособности антивирусных программ"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Контролируем актуальность антивируса и защиту ваших данных.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="41">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/protection-info.png" alt="protection-info" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"обеспечение защиты информации"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Настроим защиту от вирусов, утечек данных и кибератак.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="42">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/create-mobile-app.png" alt="create-mobile-app" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"создание мобильного приложения для ведения отчетности"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Разработаем удобное приложение для контроля финансов и документов.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="43">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/install-PO.png" alt="install-PO" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"установка программного обеспечения"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Поможем с установкой, настройкой и обновлением ПО.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="44">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/mobile-app-analitica.png" alt="mobile-app-analitica" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"создание мобильного приложения для аналитики"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Разработаем инструмент для мониторинга ключевых бизнес-показателей.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="48">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/mob-app-tasks.png" alt="mob-app-tasks" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"создание мобильного приложения для назначения задач"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Разработка мобильного приложения для удобного управления задачами.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="45">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/create-landings.png" alt="create-landings" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"создание небольших сайтов"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Сделаем сайт для компании, портфолио или личного бренда.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="46">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/add-sitios.png" alt="add-sitios" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"создание лендинга"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Разработаем посадочную страницу для продаж и генерации заявок.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
+                    <div class="development-cards__item item-for-buying" data-id="47">
+                        <div class="development-cards__item-up">
+                            <div class="development-cards__item-up-circle">
+                                <img src="./img/cards-dev-items/settings-pc.png" alt="settings-pc" class="development-cards__item-up-circle-img">
+                            </div>
+                                <p class="consultations-text-ep">текстовая консультация по</p>
+                            <h4 class="development-cards__item-up-circle-parag">"настройка персональных компьютеров"</h4>
+                        </div>
+                        <div class="development-cards__item-down">
+                            <h5 class="development-cards__item-down-parag">Оптимизируем систему, установим программы и повысим производительность.</h5>
+                            <a href="" class="development-cards__item-down-link">купить</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -295,20 +458,22 @@
         <div class="footer-shadow"></div>
         <div class="container">
             <div class="footer-logo-nav">
-                <h2 class="footer-logo-nav__logo">IT-РЕШЕНИЯ 360</h2>
+                <h2 class="footer-logo-nav__logo">
+                    <a href="index.html">IT-РЕШЕНИЯ 360</a>
+                </h2>
                 <nav class="footer-logo-nav__nav">
                     <ul class="footer-logo-nav__nav-list">
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">УСЛУГИ</a>
+                            <a href="services.html" class="footer-logo-nav__nav-list-link">УСЛУГИ</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">КАТАЛОГ</a>
+                            <a href="catalog.html" class="footer-logo-nav__nav-list-link">КАТАЛОГ</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">О нас</a>
+                            <a href="about-us.html" class="footer-logo-nav__nav-list-link">О нас</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">Контакты</a>
+                            <a href="contacts.html" class="footer-logo-nav__nav-list-link">Контакты</a>
                         </li>
                     </ul>
                 </nav>
@@ -320,6 +485,10 @@
             </div>
         </div>
     </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/burger.js"></script>
     <script src="./js/swiper.js"></script>
+    <script src="./js/goods.js"></script>
 </body>
 </html>

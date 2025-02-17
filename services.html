@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/media.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
     <header class="header">
@@ -15,14 +16,24 @@
         </section> -->
         <div class="container">
             <section class="header-section">
-                <img src="./img/logo.svg" alt="logo.svg" class="logo">
+                <a href="index.html">
+                    <img src="./img/logo.svg" alt="logo.svg" class="logo">
+                </a>
+                <h2 class="footer-logo-nav__logo logo-nav">
+                    <a href="index.html">IT-РЕШЕНИЯ 360</a>
+                </h2>
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
                 <nav class="nav-menu">
                     <ul class="nav-menu-list">
-                        <li class="nav-menu-list__item"><a href="#">ГЛАВНАЯ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">УСЛУГИ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">КАТАЛОГ</a></li>
-                        <li class="nav-menu-list__item"><a href="#">О нас</a></li>
-                        <li class="nav-menu-list__item"><a href="#">Контакты</a></li>
+                        <li class="nav-menu-list__item"><a href="index.html">ГЛАВНАЯ</a></li>
+                        <li class="nav-menu-list__item"><a href="services.html">УСЛУГИ</a></li>
+                        <li class="nav-menu-list__item"><a href="catalog.html">КАТАЛОГ</a></li>
+                        <li class="nav-menu-list__item"><a href="about-us.html">О нас</a></li>
+                        <li class="nav-menu-list__item"><a href="contacts.html">Контакты</a></li>
                     </ul>
                 </nav>
             </section>
@@ -43,7 +54,7 @@
         <div class="gradient-block__center advantages-grad"></div>
         <section class="advantages-work">
             <div class="container">
-                <h2 class="main-parag">Преимущества работы с нами</h2>
+                <h2 data-aos="fade-up" class="main-parag">Преимущества работы с нами</h2>
                 <div class="advantages-work-list">
                     <div class="advantages-work-list__item">
                         <div class="advantages-work-list__item-line">
@@ -93,7 +104,7 @@
 
         <section class="price-policy">
             <div class="container">
-                <h2 class="main-parag">Ценовая политика и дополнительные условия</h2>
+                <h2 data-aos="fade-up" class="main-parag">Ценовая политика и дополнительные условия</h2>
                 <div class="price-policy__content">
                     <div class="price-policy__content-cards">
                         <div class="price-policy__content-cards-item">
@@ -111,7 +122,7 @@
                     </div>
                     <div class="price-policy__content-slogan">
                         <h2 class="price-policy__content-slogan-parag">Хотите выбрать подходящую услугу? Перейдите в каталог!</h2>
-                        <a href="#" class="price-policy__content-slogan-link">каталог</a>
+                        <a href="catalog.html" class="price-policy__content-slogan-link">каталог</a>
                     </div>
                 </div>
             </div>
@@ -119,11 +130,11 @@
 
         <section class="faq">
             <div class="container">
-                <h2 class="main-parag">FAQ</h2>
+                <h2 data-aos="fade-up" class="main-parag">FAQ</h2>
                 <div class="faq-box">
                     <div class="faq-box__item">
                         <h3 class="faq-box__item-question">Вы можете помочь удаленно или нужен личный визит?</h3>
-                        <div class="faq-box__item-responde">
+                        <div data-aos="fade-left" class="faq-box__item-responde">
                             <p class="faq-box__item-responde-text">
                                 В большинстве случаев мы решаем проблемы удаленно, но если требуется физическое вмешательство, возможен выезд специалиста.
                             </p>
@@ -131,7 +142,7 @@
                     </div>
                     <div class="faq-box__item">
                         <h3 class="faq-box__item-question">Могу ли я заказать сразу несколько услуг?</h3>
-                        <div class="faq-box__item-responde">
+                        <div data-aos="fade-left" class="faq-box__item-responde">
                             <p class="faq-box__item-responde-text">
                                 Да, мы можем комплексно настроить систему, устранить ошибки, оптимизировать работу компьютера и провести обучение.
                             </p>
@@ -139,7 +150,7 @@
                     </div>
                     <div class="faq-box__item">
                         <h3 class="faq-box__item-question">Вы работаете только с бизнесом или помогаете и частным клиентам?</h3>
-                        <div class="faq-box__item-responde">
+                        <div data-aos="fade-left" class="faq-box__item-responde">
                             <p class="faq-box__item-responde-text">
                                 Наши услуги доступны как для бизнеса, так и для частных пользователей.
                             </p>
@@ -154,20 +165,22 @@
         <div class="footer-shadow"></div>
         <div class="container">
             <div class="footer-logo-nav">
-                <h2 class="footer-logo-nav__logo">IT-РЕШЕНИЯ 360</h2>
+                <h2 class="footer-logo-nav__logo">
+                    <a href="index.html">IT-РЕШЕНИЯ 360</a>
+                </h2>
                 <nav class="footer-logo-nav__nav">
                     <ul class="footer-logo-nav__nav-list">
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">УСЛУГИ</a>
+                            <a href="services.html" class="footer-logo-nav__nav-list-link">УСЛУГИ</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">КАТАЛОГ</a>
+                            <a href="catalog.html" class="footer-logo-nav__nav-list-link">КАТАЛОГ</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">О нас</a>
+                            <a href="about-us.html" class="footer-logo-nav__nav-list-link">О нас</a>
                         </li>
                         <li class="footer-logo-nav__nav-list-li">
-                            <a href="" class="footer-logo-nav__nav-list-link">Контакты</a>
+                            <a href="contacts.html" class="footer-logo-nav__nav-list-link">Контакты</a>
                         </li>
                     </ul>
                 </nav>
@@ -179,5 +192,8 @@
             </div>
         </div>
     </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/burger.js"></script>
 </body>
 </html>
