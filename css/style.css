@@ -419,6 +419,7 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     justify-content: center;
     align-items: center;
     height: 150px; 
+    z-index: -10;
     /* transform: rotate(45deg); */
 }
 
