@@ -195,6 +195,11 @@ h1, h2, h3, h4, h5, h6 {
     padding: 25px 70px;
 }
 
+.nav-menu-list__item a {
+    width: 100%;
+    display: inline-block;
+}
+
 /* MAIN */
 
 .advantages .main-info-title-text {
