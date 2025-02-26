@@ -30,3 +30,6 @@ exports.handler = async function(event) {
         body: JSON.stringify({ url: result.confirmation.confirmation_url }),
     };
 };
+
+console.log("SHOP_ID:", process.env.YOOKASSA_SHOP_ID);
+console.log("SECRET_KEY:", process.env.YOOKASSA_SECRET_KEY ? "Exists" : "Not set");
