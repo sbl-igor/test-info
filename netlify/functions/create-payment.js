@@ -32,4 +32,4 @@ exports.handler = async function(event) {
 };
 
 console.log("SHOP_ID:", process.env.YOOKASSA_SHOP_ID);
-console.log("SECRET_KEY:", process.env.YOOKASSA_SECRET_KEY ? "Exists" : "Not set");
+console.log("SECRET_KEY:", process.env.YOOKASSA_SECRET_KEY ? "Exist" : "Not set");
