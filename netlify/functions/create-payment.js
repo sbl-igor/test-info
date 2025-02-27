@@ -25,6 +25,15 @@ exports.handler = async function(event) {
     });
 
     const result = await response.json();
+
+    if (!result.confirmation || !result.confirmation.confirmation_url) {
+        console.error("Ошибка: confirmation_url отсутствует!", result);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: "Ошибка создания платежа. Попробуйте позже." }),
+        };
+    }
+
     return {
         statusCode: 200,
         body: JSON.stringify({ url: result.confirmation.confirmation_url }),
