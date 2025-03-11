@@ -24,11 +24,10 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         amount: { value: amount, currency: "RUB" },
-        payment_method_data: { type: "sbp" },
         confirmation: { type: "qr" },
-        capture: true, // 👈 Добавляем capture: true, чтобы платеж был сразу подтвержден
+        capture: true,
         description: "Оплата через СБП",
-      }),
+      })      
     });
 
     const data = await response.json();
