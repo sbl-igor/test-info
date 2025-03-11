@@ -23,11 +23,20 @@ exports.handler = async (event) => {
         "Idempotence-Key": Date.now().toString(),
       },
       body: JSON.stringify({
-        amount: { value: amount, currency: "RUB" },
-        confirmation: { type: "qr" },
-        capture: true,
-        description: "Оплата через СБП",
-      })      
+        amount: { 
+          value: amount, 
+          currency: "RUB" 
+        },
+        payment_method_data: {
+          type: "sbp"  // Указываем СБП как метод оплаты
+        },
+        confirmation: { 
+          type: "redirect",  // Используем redirect, а не qr
+          return_url: "https://your-website.com/success"
+        },
+        capture: true,  // Устанавливаем захват платежа
+        description: "Оплата через СБП"
+      })
     });
 
     const data = await response.json();
