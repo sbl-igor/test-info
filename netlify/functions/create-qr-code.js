@@ -1,9 +1,5 @@
 const fetch = require("node-fetch");
-const { shopId, secretKey } = require("../../config");
-
-console.log("shopId:", shopId);
-console.log("secretKey:", secretKey);
-
+require("dotenv").config();
 
 exports.handler = async (event) => {
   try {
@@ -12,12 +8,12 @@ exports.handler = async (event) => {
     const { amount } = JSON.parse(event.body);
     console.log("🔹 Сумма платежа:", amount);
 
-    // Проверяем, есть ли shopId и secretKey
-    if (!shopId || !secretKey) {
-      throw new Error("❌ Не найдены переменные YOOKASSA_SHOP_ID или YOOKASSA_SECRET_KEY");
+    // Проверяем, есть ли переменные среды
+    if (!process.env.YOOKASSA_SHOP_ID || !process.env.YOOKASSA_SECRET_KEY) {
+      throw new Error("❌ Не найдены переменные среды YOOKASSA_SHOP_ID или YOOKASSA_SECRET_KEY");
     }
 
-    const authHeader = `Basic ${Buffer.from(`${shopId}:${secretKey}`).toString("base64")}`;
+    const authHeader = `Basic ${Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString("base64")}`;
     console.log("🔹 Авторизация:", authHeader);
 
     const response = await fetch("https://api.yookassa.ru/v3/payments", {
@@ -29,7 +25,8 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         amount: { value: amount, currency: "RUB" },
-        confirmation: { type: "qr", return_url: "https://your-website.com/success" },
+        payment_method_data: { type: "sbp" },  // 👈 ОБЯЗАТЕЛЬНО ДЛЯ СБП
+        confirmation: { type: "qr" },          // 👈 Используем QR-код
         description: "Оплата через СБП",
       }),
     });
@@ -38,14 +35,13 @@ exports.handler = async (event) => {
     console.log("🔹 Ответ от Юкассы:", data);
 
     if (!data.confirmation || !data.confirmation.confirmation_url) {
-      throw new Error("❌ Юкасса не вернула QR-код");
+      throw new Error(`❌ Юкасса не вернула QR-код: ${JSON.stringify(data)}`);
     }
 
     return {
       statusCode: 200,
       body: JSON.stringify({ qrCodeUrl: data.confirmation.confirmation_url }),
     };
-
   } catch (error) {
     console.error("❌ Ошибка API:", error);
     return {
