@@ -8,7 +8,6 @@ exports.handler = async (event) => {
     const { amount } = JSON.parse(event.body);
     console.log("🔹 Сумма платежа:", amount);
 
-    // Проверяем, есть ли переменные среды
     if (!process.env.YOOKASSA_SHOP_ID || !process.env.YOOKASSA_SECRET_KEY) {
       throw new Error("❌ Не найдены переменные среды YOOKASSA_SHOP_ID или YOOKASSA_SECRET_KEY");
     }
@@ -25,8 +24,9 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         amount: { value: amount, currency: "RUB" },
-        payment_method_data: { type: "sbp" },  // 👈 ОБЯЗАТЕЛЬНО ДЛЯ СБП
-        confirmation: { type: "qr" },          // 👈 Используем QR-код
+        payment_method_data: { type: "sbp" },
+        confirmation: { type: "qr" },
+        capture: true, // 👈 Добавляем capture: true, чтобы платеж был сразу подтвержден
         description: "Оплата через СБП",
       }),
     });
