@@ -3,7 +3,7 @@ require("dotenv").config();
 
 exports.handler = async (event) => {
   try {
-    const { amount } = JSON.parse(event.body); // Получаем сумму из запроса
+    const { amount } = JSON.parse(event.body);
 
     const response = await fetch("https://api.yookassa.ru/v3/payments", {
       method: "POST",
@@ -18,41 +18,33 @@ exports.handler = async (event) => {
           currency: "RUB",
         },
         confirmation: {
-          type: "redirect", // Используем редирект вместо QR-кода для тестирования
-          return_url: "https://info-products-360.netlify.app/success.html",
+          type: "redirect", // можно заменить на "qr", если нужен QR-код
+          return_url: "https://your-website.com/success",
         },
-        capture: true, // Автоматически подтверждаем платеж
+        capture: true,
         description: "Тестовый платеж через Юкассу",
       }),
     });
 
-    const textResponse = await response.text(); // Читаем ответ как текст
-    console.log("Сырой ответ от Юкассы:", textResponse);
+    console.log("HTTP Status:", response.status, response.statusText);
 
-    try {
-      const data = JSON.parse(textResponse); // Пробуем распарсить JSON
-      console.log("Парсенный JSON от Юкассы:", JSON.stringify(data, null, 2));
+    const text = await response.text();
+    console.log("Raw response:", text);
 
-      if (response.ok && data.confirmation && data.confirmation.confirmation_url) {
-        return {
-          statusCode: 200,
-          body: JSON.stringify({ payment_url: data.confirmation.confirmation_url }),
-        };
-      } else {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ error: data.description || "Ошибка создания платежа" }),
-        };
-      }
-    } catch (parseError) {
-      console.error("Ошибка при парсинге JSON:", parseError);
+    const data = JSON.parse(text); // Теперь обрабатываем JSON безопасно
+
+    if (response.ok) {
       return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Ошибка обработки ответа от Юкассы", rawResponse: textResponse }),
+        statusCode: 200,
+        body: JSON.stringify({ payment_url: data.confirmation.confirmation_url }),
+      };
+    } else {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: data.description || "Неизвестная ошибка" }),
       };
     }
   } catch (error) {
-    console.error("Ошибка:", error.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
