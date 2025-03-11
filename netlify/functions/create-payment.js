@@ -1,9 +1,9 @@
-const fetch = require("node-fetch");
-require("dotenv").config();
+const fetch = require('node-fetch');
+require('dotenv').config();
 
 exports.handler = async (event) => {
   try {
-    const { amount } = JSON.parse(event.body);
+    const { amount } = JSON.parse(event.body); // Получаем сумму от клиента
 
     const response = await fetch("https://api.yookassa.ru/v3/payments", {
       method: "POST",
@@ -13,38 +13,29 @@ exports.handler = async (event) => {
         "Idempotence-Key": Date.now().toString(),
       },
       body: JSON.stringify({
-        amount: {
-          value: amount,
-          currency: "RUB",
-        },
-        confirmation: {
-          type: "redirect", // можно заменить на "qr", если нужен QR-код
-          return_url: "https://your-website.com/success",
-        },
-        capture: true,
+        amount: { value: amount, currency: "RUB" },
+        confirmation: { type: "qr", return_url: "https://your-website.com/success" },
         description: "Тестовый платеж через Юкассу",
+        payment_method_data: { type: "yoomoney" },
       }),
     });
 
-    console.log("HTTP Status:", response.status, response.statusText);
+    const data = await response.json();
 
-    const text = await response.text();
-    console.log("Raw response:", text);
+    // 🔹 Отладка: Выводим ответ Юкассы в логи Netlify
+    console.log("Юкасса ответ:", JSON.stringify(data, null, 2));
 
-    const data = JSON.parse(text); // Теперь обрабатываем JSON безопасно
-
-    if (response.ok) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ payment_url: data.confirmation.confirmation_url }),
-      };
-    } else {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: data.description || "Неизвестная ошибка" }),
-      };
+    if (!response.ok) {
+      throw new Error(data.description || "Неизвестная ошибка");
     }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ payment_url: data.confirmation.confirmation_url }),
+    };
   } catch (error) {
+    console.error("Ошибка API:", error.message);
+
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
