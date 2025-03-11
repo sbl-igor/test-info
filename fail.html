@@ -43,17 +43,8 @@
     <main class="main">
         <section data-aos="flip-left" class="buy-area">
             <div class="container">
-                <!-- <section class="gradient-block">
-                    <div class="gradient-block__center"></div>
-                </section> -->
-                <div class="buy-area__img-cont">
-                    <img src="" alt="" class="buy-img">
-                </div>
-                <div class="buy-area__info-cont">
-                    <h1 class="buy__parag"></h1>
-                    <p class="buy__description"></p>
-                    <button class="main-product" onclick="pay()">Купить</button>
-                </div>
+                <h1>Ошибка платежа!</h1>
+                <a href="catalog.html" download>Попробовать снова</a>
             </div>
         </section>
         <section class="gradient-block">
@@ -96,26 +87,5 @@
     <script src="./js/main.js"></script>
     <script src="./js/burger.js"></script>
     <script src="./js/products.js"></script>
-    <script>
-        async function pay() {
-            try {
-                let response = await fetch('/api/create-payment', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 500 })
-                });
-
-                let data = await response.json();
-
-                if (data.payment_url) {
-                    window.location.href = data.payment_url; // Перенаправление на оплату
-                } else {
-                    alert("Ошибка: " + data.error);
-                }
-            } catch (error) {
-                alert("Ошибка запроса: " + error.message);
-            }
-        }
-    </script>
 </body>
 </html>
