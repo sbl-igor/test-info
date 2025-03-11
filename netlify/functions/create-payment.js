@@ -14,7 +14,7 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         amount: { value: amount, currency: "RUB" },
-        confirmation: { type: "qr", return_url: "https://your-website.com/success" },
+        confirmation: { type: "qr", return_url: "https://info-products-360.netlify.app/success" },
         description: "Тестовый платеж через Юкассу",
         payment_method_data: { type: "yoomoney" },
       }),
