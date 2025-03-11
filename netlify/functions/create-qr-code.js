@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-require("dotenv").config();
+const { shopId, secretKey } = require("../../config.js");
 
 exports.handler = async (event) => {
   try {
