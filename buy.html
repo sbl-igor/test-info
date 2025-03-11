@@ -104,18 +104,20 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ amount: 500 })
                 });
-
+    
                 let data = await response.json();
-
+                console.log("Ответ от API:", data);
+    
                 if (data.payment_url) {
                     window.location.href = data.payment_url; // Перенаправление на оплату
                 } else {
-                    alert("Ошибка: " + data.error);
+                    alert("Ошибка: " + (data.error || "Неизвестная ошибка"));
                 }
             } catch (error) {
+                console.error("Ошибка запроса:", error);
                 alert("Ошибка запроса: " + error.message);
             }
         }
-    </script>
+    </script>    
 </body>
 </html>
