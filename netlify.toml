@@ -1,8 +1,2 @@
 [build]
   functions = "netlify/functions"
-
-[[redirects]]
-  from = "/api/create-payment"
-  to = "/.netlify/functions/create-payment"
-  status = 200
-  force = true

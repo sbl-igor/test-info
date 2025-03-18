@@ -52,7 +52,7 @@
                 <div class="buy-area__info-cont">
                     <h1 class="buy__parag"></h1>
                     <p class="buy__description"></p>
-                    <button class="main-product" onclick="pay()">Купить</button>
+                    <a href="qr-code.html" class="main-product">Купить</a>
                 </div>
             </div>
         </section>
@@ -96,31 +96,5 @@
     <script src="./js/main.js"></script>
     <script src="./js/burger.js"></script>
     <script src="./js/products.js"></script>
-    <script>
-        async function pay() {
-        try {
-            console.log("Отправка запроса на сервер...");
-
-            let response = await fetch('/.netlify/functions/create-payment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: 500 })
-            });
-
-            let data = await response.json();
-
-            console.log("Ответ от API:", data);
-
-            if (data.payment_url) {
-                window.location.href = data.payment_url; // Перенаправление на оплату
-            } else {
-                alert("Ошибка: " + (data.error || "Неизвестная ошибка"));
-            }
-        } catch (error) {
-            console.error("Ошибка запроса:", error);
-            alert("Ошибка запроса: " + error.message);
-        }
-    }
-    </script>    
 </body>
 </html>

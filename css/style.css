@@ -1287,3 +1287,8 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
 .contacts-open__list-it a {
     color: #FFA413;
 }
+
+.qr-code {
+    margin: 30px auto 0;
+    width: 40%;
+}

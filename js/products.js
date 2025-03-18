@@ -376,7 +376,7 @@ function displayProduct() {
         };
         
     } else {
-        document.querySelector('.main').innerHTML = "<h1>Товар не найден</h1>";
+        console.log("<h1>Товар не найден</h1>");
     }
 }
 
