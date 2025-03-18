@@ -1,6 +1,7 @@
 const fetch = require('node-fetch'); // Для отправки HTTP-запросов
 const payments = new Map();  // Временное хранилище статусов платежей
 
+
 // Получаем ключи из переменных окружения
 const TERMINAL_KEY = 't.NJYz9R135O5TIK9EypaAICG5JDkT-PYjq_GFmTlaJh7Yn2Gz6o1G6_qrdmH78fwUxN7UXhfdOU_-hd91pFZvlw';
 
@@ -8,6 +9,9 @@ exports.handler = async (event) => {
   const { OrderId, Status } = JSON.parse(event.body);  // Получаем данные из вебхука
 
   console.log("Вебхук от Тинькофф:", OrderId, Status);
+  console.log("Данные вебхука:", JSON.parse(event.body));
+  console.log('TERMINAL_KEY:', process.env.TERMINAL_KEY);
+
 
   // Если статус платежа "CONFIRMED", можно отправить запрос для дальнейшей проверки через API Тинькофф
   if (Status === "CONFIRMED") {
@@ -43,3 +47,4 @@ exports.handler = async (event) => {
       body: "OK"
   };
 };
+
