@@ -1,5 +1,4 @@
-// Файл: products.js (список товаров)
-export const products = [
+const products = [
     {   
         id: 1, 
         name: "текстовая консультация по «Google Документы»", 
@@ -348,14 +347,18 @@ export const products = [
     
 ];
 
+console.log(products)
+
+// Получаем ID товара из URL на странице success.html
 function getProductIdFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('id');
+    const params = new URLSearchParams(window.location.search);  // Извлекаем параметры из URL
+    return params.get('id');  // Возвращаем значение параметра 'id'
 }
 
+// Функция для отображения товара на странице success.html
 function displayProduct() {
-    const productId = getProductIdFromUrl();
-    const product = products.find(p => p.id == productId);
+    const productId = getProductIdFromUrl();  // Получаем ID товара из URL
+    const product = products.find(p => p.id == productId);  // Ищем товар по ID
 
     function downloadFile(url) {
         const a = document.createElement('a');
@@ -367,29 +370,18 @@ function displayProduct() {
     }    
 
     if (product) {
-        document.querySelector('.buy-img').src = product.image;
-        document.querySelector('.buy-img').alt = product.name;
-        document.querySelector('.buy__parag').textContent = product.name;
-        document.querySelector('.buy__description').textContent = product.description;
-        // document.querySelector('.main-product').onclick = function() {
-        //     downloadFile(product.doc);
-        // };
-        
+        // Отображаем информацию о товаре на странице
+        document.querySelector('.thanks-text').textContent = `Спасибо за покупку товара: "${product.name}"`;
+        document.querySelector('.thanks-text-downl').textContent = 'Скачать товар можно по кнопке ниже';
+        document.querySelector('.button-thanks-text').onclick = function() {
+            downloadFile(product.doc);  // Загружаем файл
+        };
     } else {
-        console.log("<h1>Товар не найден</h1>");
+        console.log("Товар не найден");
     }
-
-    function getProductIdFromUrl() {
-        const params = new URLSearchParams(window.location.search); // Получаем параметры из URL
-        return params.get('id'); // Возвращаем значение параметра 'id'
-    }
-    
-    // Обработчик клика на кнопку "Купить"
-    document.querySelector('.main-product').onclick = function() {
-        const productId = getProductIdFromUrl();  // Получаем ID товара из URL
-        window.location.href = `qr-code.html?id=${productId}`;  // Перенаправляем на страницу qr-code с параметром id
-    };
-    
 }
 
-displayProduct();
+// Включаем функцию отображения товара
+document.addEventListener('DOMContentLoaded', function () {
+    displayProduct();
+});

@@ -348,6 +348,14 @@
     .buy-area__info-cont {
         width: 100%;
     }
+    .thanks-text {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+    .thanks-text-downl {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 675px) {
@@ -701,5 +709,8 @@
     }
     .buy-area {
         margin: 70px 0 80px;
+    }
+    .button-thanks-text {
+        width: 100%;
     }
 }

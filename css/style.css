@@ -1292,3 +1292,35 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     margin: 30px auto 0;
     width: 40%;
 }
+
+.buy-area-cont {
+    display: flex;
+    flex-direction: column;
+}
+
+.thanks-text {
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.thanks-text-downl {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.button-thanks-text {
+    width: 300px;
+    color: #FFF;
+    background: linear-gradient(135deg,  
+        #FFA413 0%,   /* Желтый */
+        #FD9A5A 30%,  /* Оранжевый */
+        #E93A15 100%  /* Красный */
+    );
+    border-radius: 20px;
+    border: none;
+    padding: 12px 30px;
+    font-size: 26px;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
