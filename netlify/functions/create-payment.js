@@ -1,19 +1,37 @@
 const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
+    if (event.httpMethod === "OPTIONS") {
+        return {
+            statusCode: 200,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "POST, OPTIONS"
+            },
+            body: ""
+        };
+    }
+
     try {
         const { orderId, amount } = JSON.parse(event.body);
 
-        // Данные для создания платежа
+        if (!orderId || !amount) {
+            return {
+                statusCode: 400,
+                headers: { "Access-Control-Allow-Origin": "*" },
+                body: JSON.stringify({ success: false, error: "Неверные параметры." })
+            };
+        }
+
         const paymentData = {
-            TerminalKey: process.env.TERMINAL_KEY, // API-ключ заказчика
+            TerminalKey: process.env.TERMINAL_KEY,
             OrderId: orderId,
-            Amount: amount, // Сумма в копейках (1000 = 10 рублей)
+            Amount: amount, 
             Description: "Оплата заказа",
-            PayType: "QR" // Генерируем QR-код
+            PayType: "QR"
         };
 
-        // Запрос в API Тинькофф для генерации ссылки на оплату
         const response = await fetch('https://securepay.tinkoff.ru/v2/Init', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -22,23 +40,19 @@ exports.handler = async (event) => {
 
         const result = await response.json();
 
-        if (result.Success) {
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ 
-                    success: true, 
-                    paymentUrl: result.PaymentURL // Ссылка на оплату
-                })
-            };
-        } else {
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ success: false, error: result.Message })
-            };
-        }
+        return {
+            statusCode: result.Success ? 200 : 400,
+            headers: { "Access-Control-Allow-Origin": "*" },
+            body: JSON.stringify({ 
+                success: result.Success, 
+                paymentUrl: result.PaymentURL || null, 
+                error: result.Message || null 
+            })
+        };
     } catch (error) {
         return {
             statusCode: 500,
+            headers: { "Access-Control-Allow-Origin": "*" },
             body: JSON.stringify({ success: false, error: error.message })
         };
     }
