@@ -43,8 +43,12 @@
     <main class="main">
         <section class="qr-code-area">
             <div class="container">
-                <button id="pay-button">Оплатить</button>
-                <div id="qr-container"></div>
+                <!-- Здесь будет отображаться QR-код -->
+                <div id="qr-container">
+                    <p>Сканируйте QR-код для оплаты:</p>
+                    <!-- Этот img тег будет динамически обновляться с URL QR-кода -->
+                    <img id="payment-qr" src="./img/qr-code.png" alt="QR Код для оплаты" />
+                </div>
             </div>
         </section>
         <section class="gradient-block">
@@ -84,65 +88,31 @@
         </div>
     </footer>
     <script>
- document.getElementById("pay-button").addEventListener("click", function () {
-    const orderId = "order-" + Math.floor(Math.random() * 10000);  // Генерация случайного orderId
-    const amount = 1000;  // Сумма оплаты
+        // Получаем параметры из URL, например orderId
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get('id');
 
-    // Проверка параметров перед отправкой
-    if (!orderId || !amount) {
-        alert("Неверные параметры!");
-        return;
-    }
-
-    fetch('/.netlify/functions/create-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId, amount })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            console.log("QR для оплаты:", data.paymentUrl);
-            document.getElementById("qr-container").innerHTML = `
-                <p>Отсканируйте QR-код:</p>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.paymentUrl)}" alt="QR Code">
-            `;
-            // Проверка статуса через 10 секунд
-            setTimeout(() => checkPaymentStatus(orderId), 10000);
-        } else {
-            console.error("Ошибка:", data.error);
-            alert("Ошибка: " + data.error);
-        }
-    })
-    .catch(error => {
-        console.error("Ошибка при создании платежа:", error);
-        alert("Ошибка при создании платежа.");
-    });
-});
-
-// Функция для проверки статуса платежа
-function checkPaymentStatus(orderId) {
-    fetch('/.netlify/functions/check-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId })
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log("Статус платежа:", data.status);
-        if (data.success) {
-            alert("Оплата прошла успешно!");
-            window.location.href = "/success.html";
-        } else {
-            // Перепроверяем через 5 секунд
-            setTimeout(() => checkPaymentStatus(orderId), 5000);
-        }
-    })
-    .catch(error => {
-        console.error("Ошибка при проверке платежа:", error);
-        alert("Ошибка при проверке платежа.");
-    });
-}
+        // Проверка статуса платежа
+        fetch('/.netlify/functions/check-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: orderId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Статус платежа: подтвержден");
+                // Например, редиректим пользователя на страницу успешной оплаты
+                window.location.href = '/success.html';
+            } else {
+                console.error("Ошибка: Платеж не подтвержден или отклонен");
+                window.location.href = '/fail.html';
+            }
+        })
+        .catch(err => {
+            console.error("Ошибка при проверке платежа:", err);
+            window.location.href = '/fail.html';
+        });
 </script>   
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
