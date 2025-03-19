@@ -84,11 +84,17 @@
         </div>
     </footer>
     <script>
-        document.getElementById("pay-button").addEventListener("click", function () {
-    const orderId = "order-" + Math.floor(Math.random() * 10000);
-    const amount = 1000;
+ document.getElementById("pay-button").addEventListener("click", function () {
+    const orderId = "order-" + Math.floor(Math.random() * 10000);  // Генерация случайного orderId
+    const amount = 1000;  // Сумма оплаты
 
-    fetch('https://info-products-360.netlify.app/.netlify/functions/create-payment', {
+    // Проверка параметров перед отправкой
+    if (!orderId || !amount) {
+        alert("Неверные параметры!");
+        return;
+    }
+
+    fetch('/.netlify/functions/create-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId, amount })
@@ -101,8 +107,7 @@
                 <p>Отсканируйте QR-код:</p>
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.paymentUrl)}" alt="QR Code">
             `;
-
-            // Проверяем платеж каждые 10 секунд
+            // Проверка статуса через 10 секунд
             setTimeout(() => checkPaymentStatus(orderId), 10000);
         } else {
             console.error("Ошибка:", data.error);
@@ -115,8 +120,9 @@
     });
 });
 
+// Функция для проверки статуса платежа
 function checkPaymentStatus(orderId) {
-    fetch('https://info-products-360.netlify.app/.netlify/functions/check-payment', {
+    fetch('/.netlify/functions/check-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId })
@@ -128,7 +134,8 @@ function checkPaymentStatus(orderId) {
             alert("Оплата прошла успешно!");
             window.location.href = "/success.html";
         } else {
-            setTimeout(() => checkPaymentStatus(orderId), 5000); // Повторная проверка через 5 сек
+            // Перепроверяем через 5 секунд
+            setTimeout(() => checkPaymentStatus(orderId), 5000);
         }
     })
     .catch(error => {
