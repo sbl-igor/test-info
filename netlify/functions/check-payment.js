@@ -1,15 +1,32 @@
-const payments = new Map(); // Временное хранилище платежей
+const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
-    const { orderId } = JSON.parse(event.body);
+    try {
+        const { orderId } = JSON.parse(event.body);
 
-    const status = payments.get(orderId) || "PENDING"; // Если нет данных — ожидаем
+        // Запрос в API Тинькофф для проверки платежа
+        const response = await fetch('https://securepay.tinkoff.ru/v2/GetState', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                TerminalKey: process.env.TERMINAL_KEY,
+                OrderId: orderId
+            })
+        });
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify({
-            success: status === "CONFIRMED",
-            redirect: status === "CONFIRMED" ? "/success.html" : status === "REJECTED" ? "/fail.html" : null
-        })
-    };
+        const result = await response.json();
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ 
+                success: result.Status === "CONFIRMED", 
+                status: result.Status
+            })
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ success: false, error: error.message })
+        };
+    }
 };

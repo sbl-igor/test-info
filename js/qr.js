@@ -1,15 +1,30 @@
-// Получаем ID товара из URL на странице qr-code.html
 function getProductIdFromUrl() {
-    const params = new URLSearchParams(window.location.search);  // Извлекаем параметры из URL
-    return params.get('id');  // Возвращаем значение параметра 'id'
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
 }
 
-const productId = getProductIdFromUrl();
-console.log("Product ID from URL:", productId);  // Просто для проверки
+function checkPaymentStatus() {
+    const productId = getProductIdFromUrl();
 
-
-function redirectToSuccessPage(productId) {
-window.location.href = `success.html?id=${productId}`;  // Перенаправляем с параметром id
+    fetch(`https://yourserver.com/check-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: productId })  // Отправляем ID заказа
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Оплата подтверждена! Перенаправляем...");
+            window.location.href = data.redirect; // success.html
+        } else if (data.redirect) {
+            console.log("Оплата отклонена. Перенаправляем...");
+            window.location.href = data.redirect; // fail.html
+        } else {
+            console.log("Ожидаем подтверждения платежа...");
+        }
+    })
+    .catch(error => console.error("Ошибка при проверке платежа:", error));
 }
-// В случае успешного завершения, передаем ID товара
-redirectToSuccessPage(productId);  // Здесь productId - это ID товара, который был куплен
+
+// Проверяем оплату каждые 5 секунд
+setInterval(checkPaymentStatus, 5000);

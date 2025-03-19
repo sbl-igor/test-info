@@ -43,7 +43,8 @@
     <main class="main">
         <section class="qr-code-area">
             <div class="container">
-                <img class="qr-code" src="./img/qr-code.png" alt="qr-code">
+                <button id="pay-button">Оплатить</button>
+                <div id="qr-container"></div>
             </div>
         </section>
         <section class="gradient-block">
@@ -82,7 +83,52 @@
             </div>
         </div>
     </footer>
+    <script>
+        document.getElementById("pay-button").addEventListener("click", function () {
+            const orderId = "order-" + Math.floor(Math.random() * 10000); // Генерация ID заказа
+            const amount = 1000; // Сумма в копейках (1000 = 10 рублей)
+        
+            fetch('/.netlify/functions/create-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId, amount })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("QR для оплаты:", data.paymentUrl);
+                    document.getElementById("qr-container").innerHTML = `
+                        <p>Оплатите заказ по QR-коду:</p>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.paymentUrl)}" alt="QR Code">
+                    `;
+        
+                    // Проверяем платеж через 10 секунд
+                    setTimeout(() => checkPaymentStatus(orderId), 10000);
+                } else {
+                    console.error("Ошибка:", data.error);
+                }
+            });
+        });
+        
+        // Функция проверки платежа
+        function checkPaymentStatus(orderId) {
+            fetch('/.netlify/functions/check-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Статус платежа:", data.status);
+                if (data.success) {
+                    alert("Оплата прошла успешно!");
+                    window.location.href = "/success.html"; // Редирект
+                }
+            });
+        }
+        </script>        
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/burger.js"></script>
     <script type="module" src="./js/qr.js"></script>
