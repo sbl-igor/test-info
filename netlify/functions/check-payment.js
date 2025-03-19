@@ -1,36 +1,26 @@
-// check-payment.js (Netlify Function)
+// netlify/functions/check-payment.js
+const fetch = require('node-fetch');
+exports.handler = async (event) => {
+    try {
+        const { orderId } = JSON.parse(event.body);
+        const terminalKey = process.env.TERMINAL_KEY;
 
-const crypto = require('crypto'); // Для проверки подписи
+        const response = await fetch('https://securepay.tinkoff.ru/v2/GetState', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ TerminalKey: terminalKey, OrderId: orderId })
+        });
 
-exports.handler = async (event, context) => {
-    const body = JSON.parse(event.body);
-    const terminalKey = 't.NJYz9R135O5TIK9EypaAICG5JDkT-PYjq_GFmTlaJh7Yn2Gz6o1G6_qrdmH78fwUxN7UXhfdOU_-hd91pFZvlw'; // TERMINAL_KEY
+        const data = await response.json();
+        console.log('Ответ Тинькофф:', data);
 
-    console.log('Получен webhook:', body);
-
-    // Статус платежа
-    const status = body.Status;
-    const orderId = body.OrderId;
-
-    // В этой части можно обновить статус платежа в базе данных
-
-    if (status === 'CONFIRMED') {
-        console.log(`Платеж подтвержден для OrderId: ${orderId}`);
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ success: true, status: 'CONFIRMED' }),
-        };
-    } else if (status === 'REJECTED') {
-        console.log(`Платеж отклонен для OrderId: ${orderId}`);
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ success: true, status: 'REJECTED' }),
-        };
-    } else {
-        console.log(`Неизвестный статус платежа для OrderId: ${orderId}`);
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ error: 'Неизвестный статус' }),
-        };
+        if (data.Success && data.Status === 'CONFIRMED') {
+            return { statusCode: 200, body: JSON.stringify({ success: true, status: 'CONFIRMED' }) };
+        } else {
+            return { statusCode: 200, body: JSON.stringify({ success: true, status: 'FAILED' }) };
+        }
+    } catch (error) {
+        console.error('Ошибка при обработке запроса:', error);
+        return { statusCode: 500, body: JSON.stringify({ success: false, error: 'Ошибка сервера' }) };
     }
 };
