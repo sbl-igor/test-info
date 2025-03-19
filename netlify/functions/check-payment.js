@@ -5,6 +5,8 @@ exports.handler = async (event) => {
         const { orderId } = JSON.parse(event.body);
         const terminalKey = process.env.TERMINAL_KEY;
 
+        console.log('Используемый TerminalKey:', process.env.TERMINAL_KEY);
+
         const response = await fetch('https://securepay.tinkoff.ru/v2/GetState', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
