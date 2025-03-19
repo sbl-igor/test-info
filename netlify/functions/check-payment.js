@@ -1,43 +1,31 @@
-const fetch = require('node-fetch'); // Для отправки HTTP-запросов
+// netlify/functions/check-payment.js
 
-exports.handler = async (event) => {
-    const { orderId } = JSON.parse(event.body);  // Получаем orderId из тела запроса
+const axios = require('axios'); // Мы используем axios для запросов к внешнему API
 
-    const TERMINAL_KEY = process.env.TERMINAL_KEY; // Используем ключ из переменных окружения
+exports.handler = async (event, context) => {
+    const { orderId } = JSON.parse(event.body); // Получаем orderId из запроса
 
     try {
-        const response = await fetch('https://securepay.tinkoff.ru/v2/GetState', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                TerminalKey: TERMINAL_KEY,
-                OrderId: orderId
-            })
+        // Запрос к стороннему API для проверки платежа
+        const response = await axios.post('https://info-products-360.netlify.app/.netlify/functions/check-payment', {
+            orderId: orderId
         });
 
-        const data = await response.json();
-
-        if (data.Status === 'CONFIRMED') {
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ success: true, status: 'CONFIRMED' })
-            };
-        } else if (data.Status === 'REJECTED') {
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ success: false, status: 'REJECTED' })
-            };
-        }
-
+        // Добавляем CORS заголовки, чтобы разрешить запросы с любого домена
         return {
             statusCode: 200,
-            body: JSON.stringify({ success: false, status: 'PENDING' })
+            headers: {
+                'Access-Control-Allow-Origin': '*',  // Разрешаем доступ с любого домена
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(response.data),  // Ответ от стороннего API
         };
     } catch (error) {
-        console.error("Ошибка при проверке платежа:", error);
+        console.error('Ошибка при проверке платежа:', error);
+
         return {
             statusCode: 500,
-            body: JSON.stringify({ success: false, error: 'Ошибка при обработке запроса' })
+            body: JSON.stringify({ success: false, error: 'Ошибка при проверке платежа' }),
         };
     }
 };

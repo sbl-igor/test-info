@@ -1,30 +1,57 @@
-function getProductIdFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('id');
-}
-
-function checkPaymentStatus() {
-    const productId = getProductIdFromUrl();
-
-    fetch(`https://yourserver.com/check-payment`, {
+// qr.js
+function checkPaymentStatus(orderId) {
+    fetch('/.netlify/functions/check-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: productId })  // Отправляем ID заказа
+        body: JSON.stringify({ orderId: orderId })
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
-        if (data.success) {
-            console.log("Оплата подтверждена! Перенаправляем...");
-            window.location.href = data.redirect; // success.html
-        } else if (data.redirect) {
-            console.log("Оплата отклонена. Перенаправляем...");
-            window.location.href = data.redirect; // fail.html
-        } else {
-            console.log("Ожидаем подтверждения платежа...");
+        if (data.success && data.status === 'APPROVED') {
+            // Платеж подтвержден
+            console.log("Статус платежа: подтвержден");
+            window.location.href = '/success.html'; // Перенаправляем на страницу успеха
+        } else if (data.status === 'REJECTED') {
+            // Платеж отклонен
+            console.log("Статус платежа: отклонен");
+            window.location.href = '/fail.html'; // Перенаправляем на страницу неудачи
         }
     })
-    .catch(error => console.error("Ошибка при проверке платежа:", error));
+    .catch(err => {
+        console.error("Ошибка при проверке платежа:", err);
+        window.location.href = '/fail.html'; // В случае ошибки перенаправляем на страницу неудачи
+    });
 }
 
-// Проверяем оплату каждые 5 секунд
-setInterval(checkPaymentStatus, 5000);
+// qr.js
+function startPaymentCheck(orderId) {
+    const intervalId = setInterval(() => {
+        checkPaymentStatus(orderId);
+    }, 5000); // Проверка каждые 5 секунд
+
+    // Остановить проверку, когда платеж подтвержден или отклонен
+    const checkPaymentStatus = (orderId) => {
+        fetch('/.netlify/functions/check-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: orderId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.status === 'APPROVED') {
+                clearInterval(intervalId);  // Останавливаем проверку
+                console.log("Платеж подтвержден");
+                window.location.href = '/success.html'; // Перенаправление на страницу успеха
+            } else if (data.status === 'REJECTED') {
+                clearInterval(intervalId);  // Останавливаем проверку
+                console.log("Платеж отклонен");
+                window.location.href = '/fail.html'; // Перенаправление на страницу неудачи
+            }
+        })
+        .catch(err => {
+            console.error("Ошибка при проверке платежа:", err);
+            clearInterval(intervalId);  // Останавливаем проверку в случае ошибки
+            window.location.href = '/fail.html'; // Перенаправление на страницу неудачи
+        });
+    }
+}
