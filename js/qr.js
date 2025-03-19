@@ -1,3 +1,5 @@
+console.log('Скрипт qr.js загружен');
+
 // qr.js
 function checkPaymentStatus(orderId) {
     console.log('Проверка статуса платежа для OrderId:', orderId);  // Логируем начало проверки статуса
@@ -17,7 +19,7 @@ function checkPaymentStatus(orderId) {
         } else if (data.status === 'REJECTED') {
             console.log("Статус платежа: отклонен");
             window.location.href = '/fail.html'; // Перенаправляем на страницу неудачи
-        } else {
+        } else {    
             console.log("Неизвестный статус платежа:", data.status);
         }
     })
@@ -41,3 +43,12 @@ function startPaymentCheck(orderId) {
         clearInterval(intervalId);
     }, 30000); // Остановить через 30 секунд, если не получен результат
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Документ загружен, начинаем проверку');
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');  // Получаем значение параметра 'orderId'
+
+    startPaymentCheck(orderId);  // Запускаем проверку платежа
+});
+
