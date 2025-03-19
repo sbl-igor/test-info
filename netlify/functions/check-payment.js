@@ -1,39 +1,43 @@
+const fetch = require('node-fetch');
+
 exports.handler = async (event) => {
-    // Обработка CORS (OPTIONS запросы)
-    if (event.httpMethod === 'OPTIONS') {
-        return {
-            statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            },
-            body: ''
-        };
+  const { orderId } = JSON.parse(event.body);  // Получаем orderId из тела запроса
+
+  const TERMINAL_KEY = process.env.TERMINAL_KEY; // Используем ключ из переменных окружения
+
+  try {
+    const response = await fetch('https://securepay.tinkoff.ru/v2/GetState', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        TerminalKey: TERMINAL_KEY,
+        OrderId: orderId
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.Status === 'CONFIRMED') {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ success: true, status: 'CONFIRMED' })
+      };
+    } else if (data.Status === 'REJECTED') {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ success: false, status: 'REJECTED' })
+      };
     }
 
-    try {
-        const { orderId } = JSON.parse(event.body);
-
-        if (!orderId) {
-            return {
-                statusCode: 400,
-                headers: { 'Access-Control-Allow-Origin': '*' },
-                body: JSON.stringify({ success: false, error: "Отсутствует orderId." }),
-            };
-        }
-
-        // Пример успешного ответа для статуса платежа
-        return {
-            statusCode: 200,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-            body: JSON.stringify({ success: true, status: "CONFIRMED" }),
-        };
-    } catch (error) {
-        return {
-            statusCode: 500,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-            body: JSON.stringify({ success: false, error: error.message }),
-        };
-    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: false, status: 'PENDING' })
+    };
+  } catch (error) {
+    console.error("Ошибка при проверке платежа:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ success: false, error: 'Ошибка при обработке запроса' })
+    };
+  }
 };
