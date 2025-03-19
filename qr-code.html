@@ -44,11 +44,15 @@
         <section class="qr-code-area">
             <div class="container">
                 <!-- Здесь будет отображаться QR-код -->
-                <div id="qr-container">
-                    <p>Сканируйте QR-код для оплаты:</p>
-                    <!-- Этот img тег будет динамически обновляться с URL QR-кода -->
-                    <img id="payment-qr" src="./img/qr-code.png" alt="QR Код для оплаты" />
+                <h1>Оплата товара</h1>
+
+                <!-- Здесь уже твой QR-код -->
+                <div id="qr-code-container">
+                    <img src="path/to/your/qr-code.png" alt="QR-код для оплаты" />
                 </div>
+            
+                <!-- Кнопка для начала проверки платежа -->
+                <button id="start-payment-check">Проверить статус платежа</button>
             </div>
         </section>
         <section class="gradient-block">
@@ -88,7 +92,10 @@
         </div>
     </footer>
     <script>
-         function checkPaymentStatus() {
+const orderId = "12345";  // Идентификатор заказа
+
+// Функция для проверки статуса платежа
+function checkPaymentStatus(orderId) {
     fetch('/.netlify/functions/check-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -111,6 +118,16 @@
         window.location.href = '/fail.html'; // В случае ошибки тоже перенаправляем на страницу неудачи
     });
 }
+
+// Функция для проверки платежа каждые 5 секунд
+function startPaymentCheck() {
+    setInterval(() => {
+        checkPaymentStatus(orderId); // Каждые 5 секунд проверяем статус
+    }, 5000);
+}
+
+// Запускаем проверку платежа при нажатии на кнопку
+document.getElementById('start-payment-check').addEventListener('click', startPaymentCheck);
 
 </script>   
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
