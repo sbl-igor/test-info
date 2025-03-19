@@ -1,58 +1,36 @@
-const axios = require('axios');
-const fetch = require('node-fetch');
+// check-payment.js (Netlify Function)
 
-const TERMINAL_KEY = 't.NJYz9R135O5TIK9EypaAICG5JDkT-PYjq_GFmTlaJh7Yn2Gz6o1G6_qrdmH78fwUxN7UXhfdOU_-hd91pFZvlw';
+const crypto = require('crypto'); // Для проверки подписи
 
 exports.handler = async (event, context) => {
-    const { OrderId, Status } = JSON.parse(event.body);  // Получаем данные из вебхука
-    console.log("Вебхук от Тинькофф:", OrderId, Status);
+    const body = JSON.parse(event.body);
+    const terminalKey = 't.NJYz9R135O5TIK9EypaAICG5JDkT-PYjq_GFmTlaJh7Yn2Gz6o1G6_qrdmH78fwUxN7UXhfdOU_-hd91pFZvlw'; // TERMINAL_KEY
 
-    // Платеж подтвержден, отправляем запрос для получения дополнительной информации
-    if (Status === "CONFIRMED") {
-        try {
-            const checkResponse = await fetch('https://securepay.tinkoff.ru/v2/GetState', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    TerminalKey: TERMINAL_KEY,
-                    OrderId: OrderId
-                })
-            });
+    console.log('Получен webhook:', body);
 
-            const checkData = await checkResponse.json();
+    // Статус платежа
+    const status = body.Status;
+    const orderId = body.OrderId;
 
-            if (checkData.Status === "CONFIRMED") {
-                return {
-                    statusCode: 200,
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',  // Разрешаем доступ с любого домена
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ success: true, status: 'APPROVED' })
-                };
-            } else {
-                return {
-                    statusCode: 200,
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',  // Разрешаем доступ с любого домена
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ success: true, status: 'REJECTED' })
-                };
-            }
-        } catch (error) {
-            console.error("Ошибка при проверке платежа:", error);
-            return {
-                statusCode: 500,
-                body: JSON.stringify({ success: false, error: 'Ошибка при проверке платежа' }),
-            };
-        }
+    // В этой части можно обновить статус платежа в базе данных
+
+    if (status === 'CONFIRMED') {
+        console.log(`Платеж подтвержден для OrderId: ${orderId}`);
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ success: true, status: 'CONFIRMED' }),
+        };
+    } else if (status === 'REJECTED') {
+        console.log(`Платеж отклонен для OrderId: ${orderId}`);
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ success: true, status: 'REJECTED' }),
+        };
+    } else {
+        console.log(`Неизвестный статус платежа для OrderId: ${orderId}`);
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: 'Неизвестный статус' }),
+        };
     }
-
-    return {
-        statusCode: 200,
-        body: "OK"
-    };
 };

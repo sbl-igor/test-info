@@ -43,16 +43,17 @@
     <main class="main">
         <section class="qr-code-area">
             <div class="container">
-                <!-- Здесь будет отображаться QR-код -->
-                <h1>Оплата товара</h1>
 
-                <!-- Здесь уже твой QR-код -->
+
+                <h1>Оплата товара</h1>
                 <div id="qr-code-container">
-                    <img src="./img/qr-code.png" alt="QR-код для оплаты" />
+                    <!-- Здесь отображаем твой QR-код -->
+                    <img id="qr-code" src="./img/qr-code.png" alt="QR-код для оплаты">
                 </div>
-            
-                <!-- Кнопка для начала проверки платежа -->
-                <button id="start-payment-check">Проверить статус платежа</button>
+        
+                <button id="check-payment-status">Проверить статус платежа</button>
+
+
             </div>
         </section>
         <section class="gradient-block">

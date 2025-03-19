@@ -1,46 +1,28 @@
-const fetch = require('node-fetch');  // Для отправки HTTP-запросов
+// webhook.js
+exports.handler = async (event, context) => {
+    const body = JSON.parse(event.body);
+    const terminalKey = 't.NJYz9R135O5TIK9EypaAICG5JDkT-PYjq_GFmTlaJh7Yn2Gz6o1G6_qrdmH78fwUxN7UXhfdOU_-hd91pFZvlw'; // Твой TERMINAL_KEY
 
-const TERMINAL_KEY = 't.NJYz9R135O5TIK9EypaAICG5JDkT-PYjq_GFmTlaJh7Yn2Gz6o1G6_qrdmH78fwUxN7UXhfdOU_-hd91pFZvlw'; // Получи этот ключ от своего провайдера
+    console.log('Получен webhook:', body);
 
-// Временное хранилище платежей
-const payments = new Map();
+    // Статус платежа
+    const status = body.Status;
+    const orderId = body.OrderId;
 
-exports.handler = async (event) => {
-    const { OrderId, Status } = JSON.parse(event.body);  // Получаем данные из вебхука
+    // Здесь можешь обновить статус платежа в базе данных или выполнить действия, связанные с оплатой
 
-    console.log("Вебхук от Тинькофф:", OrderId, Status);
-    console.log("Данные вебхука:", JSON.parse(event.body));
-    
-    // Если статус платежа "CONFIRMED", можно отправить запрос для дальнейшей проверки через API Тинькофф
-    if (Status === "CONFIRMED") {
-        try {
-            const checkResponse = await fetch('https://securepay.tinkoff.ru/v2/GetState', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    TerminalKey: TERMINAL_KEY,
-                    OrderId: OrderId
-                })
-            });
-
-            const checkData = await checkResponse.json();
-
-            if (checkData.Status === "CONFIRMED") {
-                payments.set(OrderId, "CONFIRMED");  // Обновляем статус на "CONFIRMED"
-            } else {
-                payments.set(OrderId, "REJECTED");  // Обновляем статус на "REJECTED"
-            }
-        } catch (error) {
-            console.error("Ошибка при проверке платежа:", error);
-            payments.set(OrderId, "FAILED");  // В случае ошибки считаем платёж неуспешным
-        }
+    if (status === 'CONFIRMED') {
+        console.log(`Платеж подтвержден для OrderId: ${orderId}`);
+        // Здесь можно обновить статус в базе данных или выполнить другие действия для подтвержденного платежа
+    } else if (status === 'REJECTED') {
+        console.log(`Платеж отклонен для OrderId: ${orderId}`);
+        // Обработка отклоненного платежа
+    } else {
+        console.log(`Неизвестный статус платежа для OrderId: ${orderId}`);
     }
 
-    // Возвращаем ответ
     return {
         statusCode: 200,
-        body: "OK"
+        body: JSON.stringify({ success: true }),
     };
 };
