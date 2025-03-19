@@ -47,7 +47,7 @@ function startPaymentCheck(orderId) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Документ загружен, начинаем проверку');
     const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get('orderId');  // Получаем значение параметра 'orderId'
+    const orderId = urlParams.get('id');  // Получаем значение параметра 'orderId'
 
     startPaymentCheck(orderId);  // Запускаем проверку платежа
 });
