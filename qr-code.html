@@ -48,7 +48,7 @@
 
                 <!-- Здесь уже твой QR-код -->
                 <div id="qr-code-container">
-                    <img src="path/to/your/qr-code.png" alt="QR-код для оплаты" />
+                    <img src="./img/qr-code.png" alt="QR-код для оплаты" />
                 </div>
             
                 <!-- Кнопка для начала проверки платежа -->
@@ -91,45 +91,6 @@
             </div>
         </div>
     </footer>
-    <script>
-const orderId = "12345";  // Идентификатор заказа
-
-// Функция для проверки статуса платежа
-function checkPaymentStatus(orderId) {
-    fetch('/.netlify/functions/check-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: orderId })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            // Платеж подтвержден
-            console.log("Статус платежа: подтвержден");
-            window.location.href = '/success.html'; // Перенаправляем на страницу успеха
-        } else if (data.status === 'REJECTED') {
-            // Платеж отклонен
-            console.log("Статус платежа: отклонен");
-            window.location.href = '/fail.html'; // Перенаправляем на страницу неудачи
-        }
-    })
-    .catch(err => {
-        console.error("Ошибка при проверке платежа:", err);
-        window.location.href = '/fail.html'; // В случае ошибки тоже перенаправляем на страницу неудачи
-    });
-}
-
-// Функция для проверки платежа каждые 5 секунд
-function startPaymentCheck() {
-    setInterval(() => {
-        checkPaymentStatus(orderId); // Каждые 5 секунд проверяем статус
-    }, 5000);
-}
-
-// Запускаем проверку платежа при нажатии на кнопку
-document.getElementById('start-payment-check').addEventListener('click', startPaymentCheck);
-
-</script>   
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="./js/main.js"></script>
