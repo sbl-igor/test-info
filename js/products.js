@@ -357,68 +357,51 @@ function displayProduct() {
     const productId = getProductIdFromUrl();
     const product = products.find(p => p.id == productId);
 
-    function downloadFile(url) {
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = url.split('/').pop(); // Автоматически берёт имя файла из пути
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }    
-
     if (product) {
         document.querySelector('.buy-img').src = product.image;
         document.querySelector('.buy-img').alt = product.name;
         document.querySelector('.buy__parag').textContent = product.name;
         document.querySelector('.buy__description').textContent = product.description;
-        // document.querySelector('.main-product').onclick = function() {
-        //     downloadFile(product.doc);
-        // };
-        
     } else {
         console.log("<h1>Товар не найден</h1>");
     }
 
-    function getProductIdFromUrl() {
-        const params = new URLSearchParams(window.location.search); // Получаем параметры из URL
-        return params.get('id'); // Возвращаем значение параметра 'id'
-    }
-    
     // Обработчик клика на кнопку "Купить"
     document.querySelector('.main-product').onclick = function() {
         const productId = getProductIdFromUrl();  // Получаем ID товара из URL
+        initiatePayment(productId);
     };
-    
+}
+
+async function initiatePayment(productId) {
+    try {
+        // Отправляем запрос на сервер для инициализации платежа
+        const response = await fetch("/.netlify/functions/initPayment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                amount: 1000, // Сумма платежа
+                productId: productId // ID продукта
+            })
+        });
+
+        const data = await response.json();
+
+        console.log("Ответ от сервера:", data);
+
+        // Проверяем, есть ли ссылка на оплату
+        if (data.paymentUrl) {
+            window.location.href = data.paymentUrl; // Перенаправляем на страницу оплаты
+        } else {
+            console.error("Ошибка при инициализации платежа:", data.error);
+            alert("Ошибка при попытке оплаты. Попробуйте снова.");
+        }
+    } catch (error) {
+        console.error("Ошибка сети:", error);
+        alert("Ошибка сети. Проверьте подключение.");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const buyButton = document.querySelector(".main-product");
-
-    if (buyButton) {
-        buyButton.addEventListener("click", async () => {
-            try {
-                const response = await fetch("/.netlify/functions/initPayment", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ amount: 1000 }) // Укажите нужную сумму
-                });
-
-                const data = await response.json();
-
-                console.log("Отправляем запрос в Тинькофф:", JSON.stringify(paymentData, null, 2));
-
-                if (data.paymentUrl) {
-                    window.location.href = data.paymentUrl; // Перенаправляем на оплату
-                } else {
-                    console.error("Ошибка при инициализации платежа:", data.error);
-                    alert("Ошибка при попытке оплаты. Попробуйте снова.");
-                }
-            } catch (error) {
-                console.error("Ошибка сети:", error);
-                alert("Ошибка сети. Проверьте подключение.");
-            }
-        });
-    }
+    displayProduct();
 });
-
-displayProduct();

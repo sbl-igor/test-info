@@ -1,7 +1,10 @@
+console.log("Запрос к Netlify-функции initPayment получен");
+
 exports.handler = async function(event) {
     console.log("Received event:", event);
     return { statusCode: 200, body: "OK" };
 };
+
 
 
 export async function handler(event) {
