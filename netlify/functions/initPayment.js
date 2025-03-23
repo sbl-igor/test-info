@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');  // Импортируем fetch
+const fetch = require('node-fetch'); // Импортируем fetch
 
 // Обработчик для Netlify Function
 exports.handler = async function(event) {
@@ -17,17 +17,28 @@ exports.handler = async function(event) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
 
-        // Данные для запроса к Тинькофф
-        const terminalKey = "1742653399078DEMO";
-        const password = "o2Pol35%i5XuLogi";
+        // Параметры для запроса к Тинькофф
+        const terminalKey = "1742653399078DEMO";  // Проверь, что это правильный ключ
+        const password = "o2Pol35%i5XuLogi";  // Проверь, что это правильный пароль
         const orderId = Date.now().toString(); // Уникальный ID заказа
-        const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
-        const successUrl = "https://info-products-360.netlify.app/success";
-        const failUrl = "https://info-products-360.netlify.app/fail";
+        const notificationUrl = "https://yourwebsite.com/.netlify/functions/paymentCallback"; // Проверь URL
+        const successUrl = "https://yourwebsite.com/success";  // Проверь URL
+        const failUrl = "https://yourwebsite.com/fail";  // Проверь URL
+
+        // Логируем параметры для отладки
+        console.log("Отправляем запрос с параметрами:");
+        console.log({
+            terminalKey,
+            amount,
+            orderId,
+            notificationUrl,
+            successUrl,
+            failUrl
+        });
 
         const data = {
             TerminalKey: terminalKey,
-            Amount: amount,
+            Amount: amount * 100, // Тинькофф принимает сумму в копейках, поэтому умножаем на 100
             OrderId: orderId,
             Description: `Оплата заказа №${orderId}`,
             NotificationURL: notificationUrl,
@@ -44,6 +55,10 @@ exports.handler = async function(event) {
 
         // Получаем ответ от Тинькофф
         const result = await response.json();
+
+        // Логируем ответ для отладки
+        console.log("Ответ от Тинькофф:");
+        console.log(result);
 
         if (result.Success) {
             return {
