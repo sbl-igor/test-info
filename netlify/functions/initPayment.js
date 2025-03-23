@@ -1,8 +1,19 @@
-const fetch = require("node-fetch"); // Если используете серверную среду (например, Netlify Functions)
+const fetch = require("node-fetch"); // Для использования fetch в серверной среде
+
+// Функция для генерации токена для Тинькофф
+const crypto = require("crypto");
+
+function generateToken(terminalKey, secretKey, orderId, amount) {
+    const data = `${terminalKey};${orderId};${amount}`;
+    const hmac = crypto.createHmac("sha256", secretKey); // HMAC SHA256
+    hmac.update(data); // Шифруем данные
+    return hmac.digest("hex"); // Возвращаем токен в формате hex
+}
 
 exports.handler = async function (event) {
     console.log("Запрос к Netlify-функции initPayment получен");
 
+    // Проверка на метод POST
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Метод не разрешен" };
     }
@@ -17,9 +28,12 @@ exports.handler = async function (event) {
         const terminalKey = "1742653399078DEMO"; // TerminalKey
         const secretKey = "o2Pol35%i5XuLogi"; // SecretKey
         const orderId = Date.now().toString(); // Уникальный ID заказа
-        const notificationUrl = "https://yourwebsite.com/.netlify/functions/paymentCallback"; // Укажите правильный URL для обработки уведомлений
-        const successUrl = "https://yourwebsite.com/success"; // URL для успешного завершения оплаты
-        const failUrl = "https://yourwebsite.com/fail"; // URL для неудачной оплаты
+        const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; // URL для получения уведомлений
+        const successUrl = "https://info-products-360.netlify.app/success"; // URL для успешной оплаты
+        const failUrl = "https://info-products-360.netlify.app/fail"; // URL для неудачной оплаты
+
+        // Генерация токена
+        const token = generateToken(terminalKey, secretKey, orderId, amount);
 
         // Логируем параметры перед отправкой
         console.log("Отправляем запрос с параметрами:", {
@@ -30,6 +44,7 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
+            Token: token // Добавляем токен
         });
 
         // Параметры запроса для API Тинькофф
@@ -41,6 +56,7 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl, // URL для получения уведомлений
             SuccessURL: successUrl, // URL для успеха
             FailURL: failUrl, // URL для неудачи
+            Token: token, // добавляем токен
         };
 
         // Запрос к API Тинькофф для инициализации платежа
