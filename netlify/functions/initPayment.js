@@ -17,9 +17,20 @@ exports.handler = async function (event) {
         const terminalKey = "1742653399078DEMO"; // TerminalKey
         const secretKey = "o2Pol35%i5XuLogi"; // SecretKey
         const orderId = Date.now().toString(); // Уникальный ID заказа
-        const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; // Укажите правильный URL для обработки уведомлений
-        const successUrl = "https://info-products-360.netlify.app/success"; // URL для успешного завершения оплаты
-        const failUrl = "https://info-products-360.netlify.app/fail"; // URL для неудачной оплаты
+        const notificationUrl = "https://yourwebsite.com/.netlify/functions/paymentCallback"; // Укажите правильный URL для обработки уведомлений
+        const successUrl = "https://yourwebsite.com/success"; // URL для успешного завершения оплаты
+        const failUrl = "https://yourwebsite.com/fail"; // URL для неудачной оплаты
+
+        // Логируем параметры перед отправкой
+        console.log("Отправляем запрос с параметрами:", {
+            TerminalKey: terminalKey,
+            Amount: amount,
+            OrderId: orderId,
+            Description: `Оплата заказа №${orderId}`,
+            NotificationURL: notificationUrl,
+            SuccessURL: successUrl,
+            FailURL: failUrl,
+        });
 
         // Параметры запроса для API Тинькофф
         const data = {
@@ -40,6 +51,8 @@ exports.handler = async function (event) {
         });
 
         const result = await response.json();
+
+        console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
             // Если запрос успешный, возвращаем URL для перехода на страницу оплаты
