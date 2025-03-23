@@ -22,6 +22,18 @@ exports.handler = async function (event) {
         const successUrl = "https://info-products-360.netlify.app/success"; // URL для успешного завершения оплаты
         const failUrl = "https://info-products-360.netlify.app/fail"; // URL для неудачной оплаты
 
+        // Логируем параметры перед отправкой
+        console.log("Отправляем запрос с параметрами:", {
+            TerminalKey: terminalKey,
+            Amount: amount,
+            OrderId: orderId,
+            Description: `Оплата заказа №${orderId}`,
+            NotificationURL: notificationUrl,
+            SuccessURL: successUrl,
+            FailURL: failUrl,
+        });
+
+        // Параметры запроса для API Тинькофф
         const data = {
             TerminalKey: terminalKey,
             Amount: amount, // сумма в копейках (например, 1000 — это 10 рублей)
@@ -32,32 +44,29 @@ exports.handler = async function (event) {
             FailURL: failUrl, // URL для неудачи
         };
 
-        // Сортировка параметров по алфавиту
-        const sortedData = Object.keys(data).sort().reduce((result, key) => {
-            result[key] = data[key];
-            return result;
-        }, {});
+        // Создаем строку для подписи
+        const dataForToken = `Amount=${data.Amount}&OrderId=${data.OrderId}&TerminalKey=${data.TerminalKey}&SecretKey=${secretKey}`;
 
-        // Генерация токена
-        const token = generateToken(sortedData, secretKey);
+        // Формируем токен с использованием HMAC
+        const token = crypto
+            .createHmac("sha256", secretKey)
+            .update(dataForToken)
+            .digest("hex");
+
         console.log("Generated Token:", token);
 
-        // Включаем токен в параметры запроса
-        const dataWithToken = {
-            ...sortedData,
-            Token: token
-        };
-
-        console.log("Отправляем запрос с параметрами:", dataWithToken);
+        // Добавляем токен в запрос
+        data.Token = token;
 
         // Запрос к API Тинькофф для инициализации платежа
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dataWithToken),
+            body: JSON.stringify(data),
         });
 
         const result = await response.json();
+
         console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
@@ -80,10 +89,4 @@ exports.handler = async function (event) {
             body: JSON.stringify({ error: "Ошибка сервера" }),
         };
     }
-};
-
-// Функция для генерации токена
-const generateToken = (data, secretKey) => {
-    const signData = JSON.stringify(data); // Сериализация данных в JSON
-    return crypto.createHmac("sha256", secretKey).update(signData).digest("hex");
 };
