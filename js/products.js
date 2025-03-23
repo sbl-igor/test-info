@@ -387,7 +387,6 @@ function displayProduct() {
     // Обработчик клика на кнопку "Купить"
     document.querySelector('.main-product').onclick = function() {
         const productId = getProductIdFromUrl();  // Получаем ID товара из URL
-        window.location.href = `qr-code.html?id=${productId}`;  // Перенаправляем на страницу qr-code с параметром id
     };
     
 }
