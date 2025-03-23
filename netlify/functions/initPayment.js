@@ -1,3 +1,9 @@
+exports.handler = async function(event) {
+    console.log("Received event:", event);
+    return { statusCode: 200, body: "OK" };
+};
+
+
 export async function handler(event) {
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Метод не разрешен" };

@@ -405,6 +405,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const data = await response.json();
 
+                console.log("Отправляем запрос в Тинькофф:", JSON.stringify(paymentData, null, 2));
+
                 if (data.paymentUrl) {
                     window.location.href = data.paymentUrl; // Перенаправляем на оплату
                 } else {
