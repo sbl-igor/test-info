@@ -25,6 +25,9 @@ exports.handler = async function(event) {
         const successUrl = "https://yourwebsite.com/success";  // Проверь URL
         const failUrl = "https://yourwebsite.com/fail";  // Проверь URL
 
+        // Ваш токен
+        const token = "t.EcEq_nbmYNGU4wwqso_tGCOl_PU1mOXdqNSmCqIxO00o6yKhfgL55qmMfHqLiem6rMdvntl4pNor0TyuC0i95A"; 
+
         // Логируем параметры для отладки
         console.log("Отправляем запрос с параметрами:");
         console.log({
@@ -33,7 +36,8 @@ exports.handler = async function(event) {
             orderId,
             notificationUrl,
             successUrl,
-            failUrl
+            failUrl,
+            token
         });
 
         const data = {
@@ -43,7 +47,8 @@ exports.handler = async function(event) {
             Description: `Оплата заказа №${orderId}`,
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
-            FailURL: failUrl
+            FailURL: failUrl,
+            Token: token  // Добавляем ваш токен в запрос
         };
 
         // Отправляем запрос к Тинькофф API
