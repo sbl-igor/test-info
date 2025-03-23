@@ -392,4 +392,32 @@ function displayProduct() {
     
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const buyButton = document.querySelector(".main-product");
+
+    if (buyButton) {
+        buyButton.addEventListener("click", async () => {
+            try {
+                const response = await fetch("/.netlify/functions/initPayment", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount: 1000 }) // Укажите нужную сумму
+                });
+
+                const data = await response.json();
+
+                if (data.paymentUrl) {
+                    window.location.href = data.paymentUrl; // Перенаправляем на оплату
+                } else {
+                    console.error("Ошибка при инициализации платежа:", data.error);
+                    alert("Ошибка при попытке оплаты. Попробуйте снова.");
+                }
+            } catch (error) {
+                console.error("Ошибка сети:", error);
+                alert("Ошибка сети. Проверьте подключение.");
+            }
+        });
+    }
+});
+
 displayProduct();
