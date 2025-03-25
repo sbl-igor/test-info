@@ -9,63 +9,57 @@ exports.handler = async function (event) {
     }
 
     try {
-        const { amount, id } = JSON.parse(event.body);  // Получаем id из запроса
+        const { amount, id } = JSON.parse(event.body);
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
 
         if (!id) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Некорректный ID товара" }) };  // Проверка на наличие ID товара
+            return { statusCode: 400, body: JSON.stringify({ error: "Некорректный ID товара" }) };
         }
 
-        console.log("ID товара для оплаты:", id);  // Выводим ID товара в лог
+        console.log("ID товара для оплаты:", id);
 
-        // Данные из личного кабинета Тинькофф (ТЕСТОВЫЕ)
-        const terminalKey = "1742653399078DEMO"; // TerminalKey
-        const secretKey = "o2Pol35%i5XuLogi"; // SecretKey (тестовый пароль)
-        const orderId = Date.now().toString(); // Уникальный ID заказа
+        const terminalKey = "1742653399078DEMO"; 
+        const secretKey = "o2Pol35%i5XuLogi";
+        const orderId = Date.now().toString();
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; 
-        const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;  // Включаем ID товара в URL
-        const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;  // Включаем ID товара в URL
 
-        // Формируем параметры без вложенных объектов (Receipt, DATA)
+        // **Создаём HMAC токен** (Шифруем ID товара + OrderID)
+        const hmacSecret = "my_super_secret_key"; // Секретный ключ (не передавать в клиент)
+        const secureToken = crypto
+            .createHmac("sha256", hmacSecret)
+            .update(`${id}:${orderId}`)
+            .digest("hex");
+
+        // **Передаём токен в success.html**
+        const successUrl = `https://info-products-360.netlify.app/success?id=${id}&token=${secureToken}`;
+        const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
+
+        // **Формируем запрос в Тинькофф**
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
-            Description: `Оплата товара ID: ${id}, заказ №${orderId}`,  // Включаем ID товара в описание
+            Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-            Password: secretKey, // Пароль добавляется в конец!
+            Password: secretKey,
         };
 
-        // Сортируем параметры по ключу
+        // Генерируем токен SHA-256 для API Тинькофф
         const sortedKeys = Object.keys(tokenParams).sort();
-        const tokenString = sortedKeys.map((key) => tokenParams[key]).join(""); // Берём только значения
-
-        // Генерируем токен (SHA-256)
+        const tokenString = sortedKeys.map((key) => tokenParams[key]).join(""); 
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("Generated Token:", token);
 
-        // Параметры запроса для API Тинькофф
-        const data = {
-            TerminalKey: terminalKey,
-            Amount: amount,
-            OrderId: orderId,
-            Description: `Оплата товара ID: ${id}, заказ №${orderId}`,  // Включаем ID товара в описание
-            NotificationURL: notificationUrl,
-            SuccessURL: successUrl,
-            FailURL: failUrl,
-            Token: token, // Используем новый токен
-        };
-
-        // Запрос к API Тинькофф
+        // Отправляем запрос в Тинькофф
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
+            body: JSON.stringify({ ...tokenParams, Token: token }),
         });
 
         const result = await response.json();

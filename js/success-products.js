@@ -1,3 +1,32 @@
+(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
+    const token = urlParams.get("token");
+
+    if (!id || !token) {
+        console.log("Доступ запрещен: отсутствует ID или токен.");
+        window.location.href = "index.html";
+        return;
+    }
+
+    // Проверяем токен через сервер
+    fetch(`https://info-products-360.netlify.app/.netlify/functions/verifyToken?id=${id}&token=${token}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.valid) {
+                console.log("Доступ запрещен: неверный токен.");
+                window.location.href = "index.html";
+            } else {
+                console.log("Доступ разрешен");
+                // Загружаем данные о товаре
+            }
+        })
+        .catch(() => {
+            console.log("Ошибка проверки токена.");
+            window.location.href = "index.html";
+        });
+})();
+
 const products = [
     {   
         id: 1, 
