@@ -1300,16 +1300,18 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
 
 .thanks-text {
     font-size: 28px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .thanks-text-downl {
     font-size: 22px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .button-thanks-text {
-    width: 300px;
+    /* display: inline-flex; */
+    width: auto;
+    align-self: flex-start;
     color: #FFF;
     background: linear-gradient(135deg,  
         #FFA413 0%,   /* Желтый */
@@ -1319,7 +1321,7 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     border-radius: 20px;
     border: none;
     padding: 12px 30px;
-    font-size: 26px;
+    font-size: 32px;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
