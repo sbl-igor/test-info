@@ -9,10 +9,16 @@ exports.handler = async function (event) {
     }
 
     try {
-        const { amount } = JSON.parse(event.body);
+        const { amount, id } = JSON.parse(event.body);  // Получаем id из запроса
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
+
+        if (!id) {
+            return { statusCode: 400, body: JSON.stringify({ error: "Некорректный ID товара" }) };  // Проверка на наличие ID товара
+        }
+
+        console.log("ID товара для оплаты:", id);  // Выводим ID товара в лог
 
         // Данные из личного кабинета Тинькофф (ТЕСТОВЫЕ)
         const terminalKey = "1742653399078DEMO"; // TerminalKey
@@ -27,7 +33,7 @@ exports.handler = async function (event) {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
-            Description: `Оплата заказа №${orderId}`,
+            Description: `Оплата товара ID: ${id}, заказ №${orderId}`,  // Включаем ID товара в описание
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
@@ -48,7 +54,7 @@ exports.handler = async function (event) {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
-            Description: `Оплата заказа №${orderId}`,
+            Description: `Оплата товара ID: ${id}, заказ №${orderId}`,  // Включаем ID товара в описание
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,

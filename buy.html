@@ -92,27 +92,6 @@
             </div>
         </div>
     </footer>
-    <script>
-            async function initPayment(button) {
-            const amount = button.getAttribute("data-amount"); // Получаем сумму
-            console.log("Отправляемая сумма:", amount); // Логируем
-            
-            const response = await fetch("/.netlify/functions/initPayment", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount }) // Отправляем сумму
-            });
-
-            const result = await response.json();
-            console.log("Ответ сервера:", result); // Логируем ответ
-
-            if (result.paymentUrl) {
-                window.location.href = result.paymentUrl; // Перенаправляем на страницу оплаты
-            } else {
-                alert("Ошибка: " + result.error);
-            }
-        }
-    </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/burger.js"></script>

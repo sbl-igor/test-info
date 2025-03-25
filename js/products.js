@@ -350,48 +350,50 @@ export const products = [
 
 function getProductIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('id');
+    return params.get('id');  // Получаем 'id' из URL
 }
 
 function displayProduct() {
-    const productId = getProductIdFromUrl();
-    const product = products.find(p => p.id == productId);
+    const productId = getProductIdFromUrl();  // Получаем ID товара из URL
+    const product = products.find(p => p.id == productId);  // Ищем товар по ID
 
     if (product) {
+        // Обновляем информацию о товаре на странице
         document.querySelector('.buy-img').src = product.image;
         document.querySelector('.buy-img').alt = product.name;
         document.querySelector('.buy__parag').textContent = product.name;
         document.querySelector('.buy__description').textContent = product.description;
     } else {
-        console.log("<h1>Товар не найден</h1>");
+        console.log("Товар не найден");
     }
 
     // Обработчик клика на кнопку "Купить"
     document.querySelector('.main-product').onclick = function() {
         const productId = getProductIdFromUrl();  // Получаем ID товара из URL
-        initiatePayment(productId);
+        initiatePayment(productId);  // Инициализируем оплату
     };
 }
 
 async function initiatePayment(productId) {
     try {
         // Отправляем запрос на сервер для инициализации платежа
+        const amount = document.querySelector('.main-product').getAttribute('data-amount');  // Сумма товара из кнопки
         const response = await fetch("/.netlify/functions/initPayment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
-                amount: 2000, // Сумма платежа
-                productId: productId // ID продукта
+                amount: amount,  // Отправляем сумму
+                id: productId  // Отправляем ID товара
             })
         });
 
-        const data = await response.json();
+        const data = await response.json();  // Получаем ответ от сервера
 
         console.log("Ответ от сервера:", data);
 
         // Проверяем, есть ли ссылка на оплату
         if (data.paymentUrl) {
-            window.location.href = data.paymentUrl; // Перенаправляем на страницу оплаты
+            window.location.href = data.paymentUrl;  // Перенаправляем на страницу оплаты
         } else {
             console.error("Ошибка при инициализации платежа:", data.error);
             alert("Ошибка при попытке оплаты. Попробуйте снова.");
@@ -403,5 +405,5 @@ async function initiatePayment(productId) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    displayProduct();
+    displayProduct();  // Отображаем товар после загрузки страницы
 });
