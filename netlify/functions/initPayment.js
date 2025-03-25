@@ -14,11 +14,12 @@ exports.handler = async function (event) {
 
         const terminalKey = "1742653399078DEMO";
         const secretKey = "o2Pol35%i5XuLogi";
-        const orderId = `${id}-${Date.now()}`; // Добавляем id внутрь OrderId
+        const orderId = `${id}-${Date.now()}`; // Генерируем OrderId с ID товара
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
-        const successUrl = `https://info-products-360.netlify.app/success`;
-        const failUrl = `https://info-products-360.netlify.app/fail`;
+        const successUrl = `https://info-products-360.netlify.app/success?id=${id}`; // Добавляем id в SuccessURL
+        const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`; // Добавляем id в FailURL
 
+        // Формируем параметры для токена
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
@@ -30,21 +31,24 @@ exports.handler = async function (event) {
             Password: secretKey,
         };
 
+        // Генерация токена
         const sortedKeys = Object.keys(tokenParams).sort();
         const tokenString = sortedKeys.map((key) => tokenParams[key]).join("");
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
+        // Формируем данные для запроса
         const data = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
             Description: `Оплата заказа №${id}`,
             NotificationURL: notificationUrl,
-            SuccessURL: successUrl,
-            FailURL: failUrl,
+            SuccessURL: successUrl, // Теперь содержит id
+            FailURL: failUrl, // Теперь содержит id
             Token: token,
         };
 
+        // Отправляем запрос в Тинькофф
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
