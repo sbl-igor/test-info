@@ -26,7 +26,7 @@ exports.handler = async function (event) {
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; 
 
         // **Создаём HMAC токен** (Шифруем ID товара + OrderID)
-        const hmacSecret = "my_super_secret_key"; // Секретный ключ (не передавать в клиент)
+        const hmacSecret = "abyrepp88p1113dsqwe"; // Секретный ключ (не передавать в клиент)
         const secureToken = crypto
             .createHmac("sha256", hmacSecret)
             .update(`${id}:${orderId}`)

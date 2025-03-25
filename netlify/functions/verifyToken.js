@@ -15,7 +15,7 @@ exports.handler = async function (event) {
             return { statusCode: 403, body: JSON.stringify({ valid: false, message: "Доступ запрещен" }) };
         }
 
-        const hmacSecret = "my_super_secret_key"; // Должен совпадать с `initPayment.js`
+        const hmacSecret = "abyrepp88p1113dsqwe"; // Должен совпадать с `initPayment.js`
         const expectedToken = crypto
             .createHmac("sha256", hmacSecret)
             .update(`${id}:${orderId}`)
