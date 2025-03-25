@@ -348,11 +348,13 @@ export const products = [
     
 ];
 
+// Функция для получения ID товара из URL
 function getProductIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');  // Получаем 'id' из URL
 }
 
+// Функция для отображения товара
 function displayProduct() {
     const productId = getProductIdFromUrl();  // Получаем ID товара из URL
     const product = products.find(p => p.id == productId);  // Ищем товар по ID
@@ -368,16 +370,31 @@ function displayProduct() {
     }
 
     // Обработчик клика на кнопку "Купить"
-    document.querySelector('.main-product').onclick = function() {
-        const productId = getProductIdFromUrl();  // Получаем ID товара из URL
-        initiatePayment(productId);  // Инициализируем оплату
-    };
+    const buyButton = document.querySelector('.main-product');
+    if (buyButton) {
+        buyButton.onclick = function() {
+            const productId = getProductIdFromUrl();  // Получаем ID товара из URL
+            if (productId) {
+                initiatePayment(productId);  // Инициализируем оплату
+            } else {
+                console.error("ID товара не найден");
+            }
+        };
+    }
 }
 
+// Функция для инициализации платежа
 async function initiatePayment(productId) {
     try {
         // Отправляем запрос на сервер для инициализации платежа
         const amount = document.querySelector('.main-product').getAttribute('data-amount');  // Сумма товара из кнопки
+
+        if (!amount) {
+            console.error("Не указана сумма для оплаты");
+            alert("Не указана сумма для оплаты.");
+            return;
+        }
+
         const response = await fetch("/.netlify/functions/initPayment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -404,6 +421,7 @@ async function initiatePayment(productId) {
     }
 }
 
+// Когда страница загружена, отображаем товар
 document.addEventListener("DOMContentLoaded", () => {
     displayProduct();  // Отображаем товар после загрузки страницы
 });

@@ -25,8 +25,8 @@ exports.handler = async function (event) {
         const secretKey = "o2Pol35%i5XuLogi"; // SecretKey (тестовый пароль)
         const orderId = Date.now().toString(); // Уникальный ID заказа
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; 
-        const successUrl = "https://info-products-360.netlify.app/success";
-        const failUrl = "https://info-products-360.netlify.app/fail";
+        const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;  // Включаем ID товара в URL
+        const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;  // Включаем ID товара в URL
 
         // Формируем параметры без вложенных объектов (Receipt, DATA)
         const tokenParams = {
