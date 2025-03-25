@@ -1,32 +1,29 @@
-const crypto = require("crypto");
-const fetch = require("node-fetch");
-
 exports.handler = async function (event) {
-    console.log("Запрос к Netlify-функции initPayment получен");
-
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Метод не разрешен" };
     }
 
     try {
-        const { amount, id, successUrl, failUrl } = JSON.parse(event.body);
+        const { amount, id } = JSON.parse(event.body);
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
 
         const terminalKey = "1742653399078DEMO";
         const secretKey = "o2Pol35%i5XuLogi";
-        const orderId = Date.now().toString();
+        const orderId = `${id}-${Date.now()}`; // Добавляем id внутрь OrderId
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
+        const successUrl = `https://info-products-360.netlify.app/success`;
+        const failUrl = `https://info-products-360.netlify.app/fail`;
 
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
-            Description: `Оплата заказа №${orderId}`,
+            Description: `Оплата заказа №${id}`,
             NotificationURL: notificationUrl,
-            SuccessURL: successUrl, // Добавили динамическую ссылку
-            FailURL: failUrl, // Добавили динамическую ссылку
+            SuccessURL: successUrl,
+            FailURL: failUrl,
             Password: secretKey,
         };
 
@@ -34,16 +31,14 @@ exports.handler = async function (event) {
         const tokenString = sortedKeys.map((key) => tokenParams[key]).join("");
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
-        console.log("Generated Token:", token);
-
         const data = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
-            Description: `Оплата заказа №${orderId}`,
+            Description: `Оплата заказа №${id}`,
             NotificationURL: notificationUrl,
-            SuccessURL: successUrl, // Динамический SuccessURL
-            FailURL: failUrl, // Динамический FailURL
+            SuccessURL: successUrl,
+            FailURL: failUrl,
             Token: token,
         };
 
@@ -54,7 +49,6 @@ exports.handler = async function (event) {
         });
 
         const result = await response.json();
-        console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
             return {
