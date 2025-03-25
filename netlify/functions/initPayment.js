@@ -14,16 +14,16 @@ exports.handler = async function (event) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
 
-        // Ваши данные из ЛК Тинькофф
+        // Данные из личного кабинета Тинькофф (ТЕСТОВЫЕ)
         const terminalKey = "1742653399078DEMO"; // TerminalKey
-        const secretKey = "o2Pol35%i5XuLogi"; // SecretKey
+        const secretKey = "o2Pol35%i5XuLogi"; // SecretKey (тестовый пароль)
         const orderId = Date.now().toString(); // Уникальный ID заказа
-        const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; // Укажите правильный URL для обработки уведомлений
-        const successUrl = "https://info-products-360.netlify.app/success"; // URL для успешного завершения оплаты
-        const failUrl = "https://info-products-360.netlify.app/fail"; // URL для неудачной оплаты
+        const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; 
+        const successUrl = "https://info-products-360.netlify.app/success";
+        const failUrl = "https://info-products-360.netlify.app/fail";
 
-        // Логируем параметры перед отправкой
-        console.log("Отправляем запрос с параметрами:", {
+        // Формируем строку для подписи токена
+        const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
@@ -31,34 +31,31 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-        });
+            Password: secretKey,
+        };
+
+        // Сортируем параметры по алфавиту и формируем строку
+        const sortedKeys = Object.keys(tokenParams).sort();
+        const tokenString = sortedKeys.map((key) => `${key}=${tokenParams[key]}`).join("");
+
+        // Генерируем токен
+        const token = crypto.createHash("sha256").update(tokenString).digest("hex");
+
+        console.log("Generated Token:", token);
 
         // Параметры запроса для API Тинькофф
         const data = {
             TerminalKey: terminalKey,
-            Amount: amount, // сумма в копейках (например, 1000 — это 10 рублей)
-            OrderId: orderId, // уникальный ID заказа
-            Description: `Оплата заказа №${orderId}`, // описание
-            NotificationURL: notificationUrl, // URL для получения уведомлений
-            SuccessURL: successUrl, // URL для успеха
-            FailURL: failUrl, // URL для неудачи
+            Amount: amount, 
+            OrderId: orderId, 
+            Description: `Оплата заказа №${orderId}`, 
+            NotificationURL: notificationUrl, 
+            SuccessURL: successUrl, 
+            FailURL: failUrl, 
+            Token: token, 
         };
 
-        // Создаем строку для подписи
-        const dataForToken = `Amount=${data.Amount}&OrderId=${data.OrderId}&TerminalKey=${data.TerminalKey}&SecretKey=${secretKey}`;
-
-        // Формируем токен с использованием HMAC
-        const token = crypto
-            .createHmac("sha256", secretKey)
-            .update(dataForToken)
-            .digest("hex");
-
-        console.log("Generated Token:", token);
-
-        // Добавляем токен в запрос
-        data.Token = token;
-
-        // Запрос к API Тинькофф для инициализации платежа
+        // Запрос к API Тинькофф
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -70,13 +67,12 @@ exports.handler = async function (event) {
         console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
-            // Если запрос успешный, возвращаем URL для перехода на страницу оплаты
+            // Возвращаем ссылку на страницу оплаты
             return {
                 statusCode: 200,
                 body: JSON.stringify({ paymentUrl: result.PaymentURL }),
             };
         } else {
-            // Если произошла ошибка, возвращаем сообщение об ошибке
             return {
                 statusCode: 400,
                 body: JSON.stringify({ error: result.Message }),

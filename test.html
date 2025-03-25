@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата</title>
+</head>
+<body>
+    <h1>Оплата через Тинькофф</h1>
+    <label>Сумма (в рублях):</label>
+    <input type="number" id="amount" value="100">
+    <button onclick="initPayment()">Оплатить</button>
+
+    <script>
+        async function initPayment() {
+            const amount = document.getElementById("amount").value * 100; // Преобразуем рубли в копейки
+            const response = await fetch("/.netlify/functions/initPayment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount })
+            });
+
+            const result = await response.json();
+            if (result.paymentUrl) {
+                window.location.href = result.paymentUrl; // Перенаправляем на страницу оплаты
+            } else {
+                alert("Ошибка: " + result.error);
+            }
+        }
+    </script>
+</body>
+</html>
