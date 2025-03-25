@@ -8,13 +8,13 @@ exports.handler = async function (event) {
 
     try {
         const { amount, id } = JSON.parse(event.body);
-        if (!amount || amount <= 0) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
+        if (!amount || amount <= 0 || !id) {
+            return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма или отсутствует id" }) };
         }
 
         const terminalKey = "1742653399078DEMO";
         const secretKey = "o2Pol35%i5XuLogi";
-        const orderId = `${id}-${Date.now()}`; // Генерируем OrderId с ID товара
+        const orderId = `${id}-${Date.now()}`; // Генерация OrderId с ID товара
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
         const successUrl = `https://info-products-360.netlify.app/success?id=${id}`; // Добавляем id в SuccessURL
         const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`; // Добавляем id в FailURL

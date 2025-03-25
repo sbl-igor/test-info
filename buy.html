@@ -94,27 +94,18 @@
     </footer>
     <script>
         async function initPayment(button) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get("id"); // Получаем id из URL
-            const amount = button.getAttribute("data-amount");
-
-            console.log("ID из URL:", id);
-            console.log("Отправляемая сумма:", amount);
-
-            const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;
-            const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
+            const amount = button.getAttribute("data-amount"); // Получаем сумму из атрибута кнопки
+            const id = window.location.search.split('=')[1]; // Получаем `id` из URL
 
             const response = await fetch("/.netlify/functions/initPayment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount, id, successUrl, failUrl }) // Отправляем id
+                body: JSON.stringify({ amount, id }) // Передаем amount и id
             });
 
             const result = await response.json();
-            console.log("Ответ сервера:", result);
-
             if (result.paymentUrl) {
-                window.location.href = result.paymentUrl;
+                window.location.href = result.paymentUrl; // Перенаправляем на страницу оплаты
             } else {
                 alert("Ошибка: " + result.error);
             }
