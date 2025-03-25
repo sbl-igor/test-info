@@ -22,7 +22,7 @@ exports.handler = async function (event) {
         const successUrl = "https://info-products-360.netlify.app/success";
         const failUrl = "https://info-products-360.netlify.app/fail";
 
-        // Формируем строку для подписи токена
+        // Формируем параметры без вложенных объектов (Receipt, DATA)
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
@@ -31,14 +31,14 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-            Password: secretKey,
+            Password: secretKey, // Пароль добавляется в конец!
         };
 
-        // Сортируем параметры по алфавиту и формируем строку
+        // Сортируем параметры по ключу
         const sortedKeys = Object.keys(tokenParams).sort();
-        const tokenString = sortedKeys.map((key) => `${key}=${tokenParams[key]}`).join("");
+        const tokenString = sortedKeys.map((key) => tokenParams[key]).join(""); // Берём только значения
 
-        // Генерируем токен
+        // Генерируем токен (SHA-256)
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("Generated Token:", token);
@@ -46,13 +46,13 @@ exports.handler = async function (event) {
         // Параметры запроса для API Тинькофф
         const data = {
             TerminalKey: terminalKey,
-            Amount: amount, 
-            OrderId: orderId, 
-            Description: `Оплата заказа №${orderId}`, 
-            NotificationURL: notificationUrl, 
-            SuccessURL: successUrl, 
-            FailURL: failUrl, 
-            Token: token, 
+            Amount: amount,
+            OrderId: orderId,
+            Description: `Оплата заказа №${orderId}`,
+            NotificationURL: notificationUrl,
+            SuccessURL: successUrl,
+            FailURL: failUrl,
+            Token: token, // Используем новый токен
         };
 
         // Запрос к API Тинькофф
@@ -67,7 +67,6 @@ exports.handler = async function (event) {
         console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
-            // Возвращаем ссылку на страницу оплаты
             return {
                 statusCode: 200,
                 body: JSON.stringify({ paymentUrl: result.PaymentURL }),
