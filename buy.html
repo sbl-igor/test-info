@@ -94,27 +94,29 @@
     </footer>
     <script>
         async function initPayment(button) {
-            const amount = button.getAttribute("data-amount"); // Получаем сумму из атрибута кнопки
-            const id = new URLSearchParams(window.location.search).get('id'); // Получаем id из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get("id"); // Получаем id из URL
+            const amount = button.getAttribute("data-amount");
 
-            // Добавим проверку на наличие данных
-            if (!id || !amount) {
-                alert("Ошибка: отсутствуют id или amount.");
-                return; // Прерываем выполнение, если нет id или amount
-            }
+            console.log("ID из URL:", id);
+            console.log("Отправляемая сумма:", amount);
+
+            const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;
+            const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
             const response = await fetch("/.netlify/functions/initPayment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount, id }) // Отправляем amount и id
+                body: JSON.stringify({ amount, id, successUrl, failUrl }) // Отправляем id
             });
 
             const result = await response.json();
+            console.log("Ответ сервера:", result);
+
             if (result.paymentUrl) {
-                window.location.href = result.paymentUrl; // Перенаправляем на страницу оплаты
+                window.location.href = result.paymentUrl;
             } else {
-                console.error("Ошибка при инициализации платежа:", result.error);
-                alert("Ошибка при инициализации платежа: " + result.error); // Показываем ошибку
+                alert("Ошибка: " + result.error);
             }
         }
     </script>
