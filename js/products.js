@@ -380,7 +380,7 @@ async function initiatePayment(productId) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
-                amount: 1000, // Сумма платежа
+                amount: 2000, // Сумма платежа
                 productId: productId // ID продукта
             })
         });
