@@ -97,15 +97,16 @@
             const amount = button.getAttribute("data-amount"); // Получаем сумму из атрибута кнопки
             const id = new URLSearchParams(window.location.search).get('id'); // Получаем id из URL
 
+            // Добавим проверку на наличие данных
             if (!id || !amount) {
-                console.error('Ошибка: id или amount отсутствуют');
-                return; // Прерываем выполнение, если id или amount отсутствуют
+                alert("Ошибка: отсутствуют id или amount.");
+                return; // Прерываем выполнение, если нет id или amount
             }
 
             const response = await fetch("/.netlify/functions/initPayment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount, id }) // Передаем amount и id
+                body: JSON.stringify({ amount, id }) // Отправляем amount и id
             });
 
             const result = await response.json();
@@ -113,6 +114,7 @@
                 window.location.href = result.paymentUrl; // Перенаправляем на страницу оплаты
             } else {
                 console.error("Ошибка при инициализации платежа:", result.error);
+                alert("Ошибка при инициализации платежа: " + result.error); // Показываем ошибку
             }
         }
     </script>

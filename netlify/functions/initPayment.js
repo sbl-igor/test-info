@@ -9,8 +9,8 @@ exports.handler = async function (event) {
     try {
         const { amount, id } = JSON.parse(event.body);
 
-        // Логирование значений для отладки
-        console.log('Получены данные от клиента:', { amount, id });
+        // Логируем данные, которые получаем от клиента
+        console.log('Полученные данные:', { amount, id });
 
         if (!amount || amount <= 0 || !id) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма или отсутствует id" }) };
