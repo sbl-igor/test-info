@@ -95,33 +95,33 @@
     <script>
         console.log("URL:", window.location.href);
         const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get("id"); // Получаем id из URL
-        console.log("Извлечённый ID:", id);
+        const idProd = urlParams.get("id"); // Получаем id из URL
+        console.log("Извлечённый idProd:", idProd);
 
 
         async function initPayment(button) {
         const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get("id"); // Получаем id из URL
+        const idProd = urlParams.get("id"); // Получаем id из URL
         const amount = button.getAttribute("data-amount");
 
         // Проверка на валидность id и amount
-        if (!id || !amount) {
+        if (!idProd || !amount) {
             alert("Ошибка: некорректные параметры");
             return;
         }
 
-        console.log("ID из URL:", id);  // Логируем значение id
+        console.log("idProd из URL:", idProd);  // Логируем значение id
         console.log("Отправляемая сумма:", amount);
 
-        const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;
-        const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
+        const successUrl = `https://info-products-360.netlify.app/success?id=${idProd}`;
+        const failUrl = `https://info-products-360.netlify.app/fail?id=${idProd}`;
 
-        console.log("Отправляемые данные:", JSON.stringify({ amount, id, successUrl, failUrl }));
+        console.log("Отправляемые данные:", JSON.stringify({ amount, idProd, successUrl, failUrl }));
 
         const response = await fetch("/.netlify/functions/initPayment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount, id: Number(id), successUrl, failUrl }) // Отправляем id
+            body: JSON.stringify({ amount, idProd: Number(idProd), successUrl, failUrl }) // Отправляем id
         });
 
         const result = await response.json();
