@@ -94,34 +94,37 @@
     </footer>
     <script>
         async function initPayment(button) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get("id"); // Получаем id из URL
-            const amount = button.getAttribute("data-amount");
-    
-            console.log("ID из URL:", id);
-            console.log("Отправляемая сумма:", amount);
-    
-            // Сохраняем id в localStorage
-            localStorage.setItem('productId', id);
-    
-            const successUrl = `https://info-products-360.netlify.app/success`;
-            const failUrl = `https://info-products-360.netlify.app/fail`;
-    
-            const response = await fetch("/.netlify/functions/initPayment", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount, id, successUrl, failUrl }) // Отправляем id
-            });
-    
-            const result = await response.json();
-            console.log("Ответ сервера:", result);
-    
-            if (result.paymentUrl) {
-                window.location.href = result.paymentUrl; // Переходим на страницу платежа
-            } else {
-                alert("Ошибка: " + result.error);
-            }
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id"); // Получаем id из URL
+        const amount = button.getAttribute("data-amount");
+
+        // Проверка на валидность id и amount
+        if (!id || !amount) {
+            alert("Ошибка: некорректные параметры");
+            return;
         }
+
+        console.log("ID из URL:", id);
+        console.log("Отправляемая сумма:", amount);
+
+        const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;
+        const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
+
+        const response = await fetch("/.netlify/functions/initPayment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount, id, successUrl, failUrl }) // Отправляем id
+        });
+
+        const result = await response.json();
+        console.log("Ответ сервера:", result);
+
+        if (result.paymentUrl) {
+            window.location.href = result.paymentUrl;
+        } else {
+            alert("Ошибка: " + result.error);
+        }
+    }
     </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="./js/main.js"></script>
