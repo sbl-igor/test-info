@@ -8,19 +8,18 @@ exports.handler = async function (event) {
 
     try {
         const { amount, id, successUrl, failUrl } = JSON.parse(event.body);
-        
-        // Валидация данных
+
+        // Проверка на корректность параметров
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
-
         if (!id) {
             return { statusCode: 400, body: JSON.stringify({ error: "Отсутствует id заказа" }) };
         }
 
         const terminalKey = "1742653399078DEMO";
         const secretKey = "o2Pol35%i5XuLogi";
-        const orderId = `${id}-${Date.now()}`; // Добавляем id внутрь OrderId
+        const orderId = `${id}-${Date.now()}`; // Уникальный OrderId
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
 
         const tokenParams = {
@@ -56,12 +55,11 @@ exports.handler = async function (event) {
         });
 
         const result = await response.json();
-        console.log("Результат запроса к платежной системе:", result);
 
         if (result.Success) {
             return {
                 statusCode: 200,
-                body: JSON.stringify({ paymentUrl: result.PaymentURL }),
+                body: JSON.stringify({ paymentUrl: result.PaymentURL }), // Возвращаем ссылку на платежную страницу
             };
         } else {
             return {
