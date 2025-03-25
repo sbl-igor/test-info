@@ -9,53 +9,44 @@ exports.handler = async function (event) {
     }
 
     try {
-        const { amount } = JSON.parse(event.body);
+        const { amount, id, successUrl, failUrl } = JSON.parse(event.body);
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
 
-        // Данные из личного кабинета Тинькофф (ТЕСТОВЫЕ)
-        const terminalKey = "1742653399078DEMO"; // TerminalKey
-        const secretKey = "o2Pol35%i5XuLogi"; // SecretKey (тестовый пароль)
-        const orderId = Date.now().toString(); // Уникальный ID заказа
-        const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback"; 
-        const successUrl = "https://info-products-360.netlify.app/success";
-        const failUrl = "https://info-products-360.netlify.app/fail";
+        const terminalKey = "1742653399078DEMO";
+        const secretKey = "o2Pol35%i5XuLogi";
+        const orderId = Date.now().toString();
+        const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
 
-        // Формируем параметры без вложенных объектов (Receipt, DATA)
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
             Description: `Оплата заказа №${orderId}`,
             NotificationURL: notificationUrl,
-            SuccessURL: successUrl,
-            FailURL: failUrl,
-            Password: secretKey, // Пароль добавляется в конец!
+            SuccessURL: successUrl, // Добавили динамическую ссылку
+            FailURL: failUrl, // Добавили динамическую ссылку
+            Password: secretKey,
         };
 
-        // Сортируем параметры по ключу
         const sortedKeys = Object.keys(tokenParams).sort();
-        const tokenString = sortedKeys.map((key) => tokenParams[key]).join(""); // Берём только значения
-
-        // Генерируем токен (SHA-256)
+        const tokenString = sortedKeys.map((key) => tokenParams[key]).join("");
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("Generated Token:", token);
 
-        // Параметры запроса для API Тинькофф
         const data = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
             Description: `Оплата заказа №${orderId}`,
             NotificationURL: notificationUrl,
-            SuccessURL: successUrl,
-            FailURL: failUrl,
-            Token: token, // Используем новый токен
+            SuccessURL: successUrl, // Динамический SuccessURL
+            FailURL: failUrl, // Динамический FailURL
+            Token: token,
         };
 
-        // Запрос к API Тинькофф
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -63,7 +54,6 @@ exports.handler = async function (event) {
         });
 
         const result = await response.json();
-
         console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
