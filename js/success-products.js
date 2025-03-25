@@ -5,7 +5,7 @@
 
     if (!id || !token) {
         console.log("Доступ запрещен: отсутствует ID или токен.");
-        // window.location.href = "index.html";
+        window.location.href = "index.html";
         return;
     }
 
@@ -15,7 +15,7 @@
         .then(data => {
             if (!data.valid) {
                 console.log("Доступ запрещен: неверный токен.");
-                // window.location.href = "index.html";
+                window.location.href = "index.html";
             } else {
                 console.log("Доступ разрешен");
                 // Загружаем данные о товаре
@@ -23,7 +23,7 @@
         })
         .catch(() => {
             console.log("Ошибка проверки токена.");
-            // window.location.href = "index.html";
+            window.location.href = "index.html";
         });
 })();
 
