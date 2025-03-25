@@ -121,7 +121,7 @@
         const response = await fetch("/.netlify/functions/initPayment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount, idProd: Number(idProd), successUrl, failUrl }) // Отправляем id
+            body: JSON.stringify({ amount, id: Number(idProd), successUrl, failUrl }) // Отправляем id
         });
 
         const result = await response.json();
