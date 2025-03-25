@@ -7,7 +7,15 @@ exports.handler = async function (event) {
     }
 
     try {
-        const { amount, id, successUrl, failUrl } = JSON.parse(event.body);
+        const body = JSON.parse(event.body);
+        console.log("Полученные параметры на сервере:", body); // Логируем входящие данные
+        
+        const { amount, id, successUrl, failUrl } = body;
+        
+        if (!id) {
+            console.error("Ошибка: id отсутствует");
+            return { statusCode: 400, body: JSON.stringify({ error: "Отсутствует id заказа", receivedBody: body }) };
+        }        
 
         // Проверка на корректность параметров
         if (!amount || amount <= 0) {

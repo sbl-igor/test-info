@@ -116,12 +116,13 @@
         const successUrl = `https://info-products-360.netlify.app/success?id=${idProd}`;
         const failUrl = `https://info-products-360.netlify.app/fail?id=${idProd}`;
 
-        console.log("Отправляемые данные:", JSON.stringify({ amount, idProd, successUrl, failUrl }));
+        console.log("idProd перед отправкой:", idProd);
+
 
         const response = await fetch("/.netlify/functions/initPayment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount, id: Number(idProd), successUrl, failUrl }) // Отправляем id
+            body: JSON.stringify({ amount, id: idProd, successUrl, failUrl })
         });
 
         const result = await response.json();
