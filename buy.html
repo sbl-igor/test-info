@@ -93,6 +93,12 @@
         </div>
     </footer>
     <script>
+        console.log("URL:", window.location.href);
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id"); // Получаем id из URL
+        console.log("Извлечённый ID:", id);
+
+
         async function initPayment(button) {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id"); // Получаем id из URL
