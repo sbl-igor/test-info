@@ -97,24 +97,27 @@
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get("id"); // Получаем id из URL
             const amount = button.getAttribute("data-amount");
-
+    
             console.log("ID из URL:", id);
             console.log("Отправляемая сумма:", amount);
-
-            const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;
-            const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
-
+    
+            // Сохраняем id в localStorage
+            localStorage.setItem('productId', id);
+    
+            const successUrl = `https://info-products-360.netlify.app/success`;
+            const failUrl = `https://info-products-360.netlify.app/fail`;
+    
             const response = await fetch("/.netlify/functions/initPayment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ amount, id, successUrl, failUrl }) // Отправляем id
             });
-
+    
             const result = await response.json();
             console.log("Ответ сервера:", result);
-
+    
             if (result.paymentUrl) {
-                window.location.href = result.paymentUrl;
+                window.location.href = result.paymentUrl; // Переходим на страницу платежа
             } else {
                 alert("Ошибка: " + result.error);
             }
