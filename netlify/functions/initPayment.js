@@ -33,7 +33,25 @@ exports.handler = async function (event) {
         const successUrl = `https://info-products-360.netlify.app/success?id=${id}&token=${secureToken}`;
         const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
-        // **Формируем запрос в Тинькофф**
+        // **Объект чека (Receipt)**
+        const receipt = {
+            Email: "customer@example.com",
+            Phone: "+79001234567",
+            Taxation: "usn_income",
+            Items: [
+                {
+                    Name: "Инфо-продукт",
+                    Price: amount,
+                    Quantity: 1,
+                    Amount: amount,
+                    Tax: "none",
+                    PaymentMethod: "full_prepayment",
+                    PaymentObject: "commodity"
+                }
+            ]
+        };
+
+        // **Формируем запрос в Тинькофф (без Receipt для токена)**
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
@@ -41,44 +59,49 @@ exports.handler = async function (event) {
             Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
-            FailURL: failUrl,
-            Password: secretKey,
+            FailURL: failUrl
         };
 
-        // Генерируем токен SHA-256 для API Тинькофф
-        const sortedKeys = Object.keys(tokenParams).sort();
-        const tokenString = sortedKeys.map((key) => tokenParams[key]).join(""); 
-        const token = crypto.createHash("sha256").update(tokenString).digest("hex");
+        // **Генерация токена SHA-256**
+        function generateToken(params, secretKey) {
+            const filteredParams = Object.keys(params)
+                .filter(key => typeof params[key] !== "object") // Исключаем объекты
+                .sort()
+                .map(key => params[key])
+                .concat(secretKey)
+                .join("");
 
-        console.log("Generated Token:", token);
+            return crypto.createHash("sha256").update(filteredParams).digest("hex");
+        }
 
-        // Отправляем запрос в Тинькофф
+        const token = generateToken(tokenParams, secretKey);
+
+        // **Отправляем запрос в Тинькофф**
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...tokenParams, Token: token }),
+            body: JSON.stringify({ ...tokenParams, Token: token, Receipt: receipt })
         });
 
         const result = await response.json();
-
         console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
             return {
                 statusCode: 200,
-                body: JSON.stringify({ paymentUrl: result.PaymentURL }),
+                body: JSON.stringify({ paymentUrl: result.PaymentURL })
             };
         } else {
             return {
                 statusCode: 400,
-                body: JSON.stringify({ error: result.Message }),
+                body: JSON.stringify({ error: result.Message })
             };
         }
     } catch (error) {
         console.error("Ошибка при обработке запроса:", error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Ошибка сервера" }),
+            body: JSON.stringify({ error: "Ошибка сервера" })
         };
     }
 };
