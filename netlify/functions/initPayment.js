@@ -43,6 +43,22 @@ exports.handler = async function (event) {
             SuccessURL: successUrl,
             FailURL: failUrl,
             Password: secretKey,
+            Receipt: {
+                Email: "customer@example.com", // Email покупателя (можно передавать из формы)
+                Phone: "+79001234567", // Телефон покупателя (по необходимости)
+                Taxation: "usn_income", // Система налогообложения (замени на нужную)
+                Items: [
+                    {
+                        Name: "Инфо-продукт", // Название товара (можно передавать из запроса)
+                        Price: amount, // Цена за единицу
+                        Quantity: 1, // Количество
+                        Amount: amount, // Итоговая сумма
+                        Tax: "none", // Ставка налога (замени на нужную)
+                        PaymentMethod: "full_prepayment", // Тип платежа
+                        PaymentObject: "commodity" // Тип товара
+                    }
+                ]
+            }            
         };
 
         // Генерируем токен SHA-256 для API Тинькофф
