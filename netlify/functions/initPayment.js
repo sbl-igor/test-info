@@ -33,7 +33,25 @@ exports.handler = async function (event) {
         const successUrl = `https://info-products-360.netlify.app/success?id=${id}&token=${secureToken}`;
         const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
-        // **Формируем запрос в Тинькофф**
+        // **Формируем объект Receipt (чек)**
+        const Receipt = {
+            Email: "customer@example.com",
+            Phone: "+79001234567",
+            Taxation: "usn_income",
+            Items: [
+                {
+                    Name: "Инфо-продукт",
+                    Price: amount,
+                    Quantity: 1,
+                    Amount: amount,
+                    Tax: "none",
+                    PaymentMethod: "full_prepayment",
+                    PaymentObject: "commodity"
+                }
+            ]
+        };
+
+        // **Формируем запрос в Тинькофф (без Receipt для токена)**
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
@@ -41,42 +59,32 @@ exports.handler = async function (event) {
             Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
-            FailURL: failUrl,
-            Password: secretKey,
-            Receipt: {
-                Email: "customer@example.com", // Email покупателя (можно передавать из формы)
-                Phone: "+79001234567", // Телефон покупателя (по необходимости)
-                Taxation: "usn_income", // Система налогообложения (замени на нужную)
-                Items: [
-                    {
-                        Name: "Инфо-продукт", // Название товара (можно передавать из запроса)
-                        Price: amount, // Цена за единицу
-                        Quantity: 1, // Количество
-                        Amount: amount, // Итоговая сумма
-                        Tax: "none", // Ставка налога (замени на нужную)
-                        PaymentMethod: "full_prepayment", // Тип платежа
-                        PaymentObject: "commodity" // Тип товара
-                    }
-                ]
-            }            
+            FailURL: failUrl
         };
 
-        // Генерируем токен SHA-256 для API Тинькофф
-        const sortedKeys = Object.keys(tokenParams).sort();
-        const tokenString = sortedKeys.map((key) => tokenParams[key]).join(""); 
-        const token = crypto.createHash("sha256").update(tokenString).digest("hex");
+        // **Генерация токена по правилам Тинькофф**
+        function generateToken(params, secretKey) {
+            const filteredParams = Object.keys(params)
+                .sort()
+                .map(key => params[key])
+                .concat(secretKey)
+                .join("");
 
+            return crypto.createHash("sha256").update(filteredParams).digest("hex");
+        }
+
+        // Создаём токен
+        const token = generateToken(tokenParams, secretKey);
         console.log("Generated Token:", token);
 
-        // Отправляем запрос в Тинькофф
+        // **Отправляем запрос в Тинькофф**
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...tokenParams, Token: token }),
+            body: JSON.stringify({ ...tokenParams, Token: token, Receipt }) // Добавляем Receipt, но не используем в токене
         });
 
         const result = await response.json();
-
         console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
