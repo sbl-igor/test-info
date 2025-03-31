@@ -33,7 +33,7 @@ exports.handler = async function (event) {
         const successUrl = `https://info-products-360.netlify.app/success?id=${id}&token=${secureToken}`;
         const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
-        // **Упрощённый объект Receipt**
+        // **Упрощённый объект Receipt с корректной суммой**
         const receipt = {
             Email: "shokeator98@gmail.com", // Замени на email покупателя
             Phone: "+79244324908", // Замени на телефон покупателя
@@ -41,9 +41,9 @@ exports.handler = async function (event) {
             Items: [
                 {
                     Name: "Цифровой товар", // Общее название
-                    Price: amount * 100,
+                    Price: Math.round(amount * 100),
                     Quantity: 1,
-                    Amount: amount * 100,
+                    Amount: Math.round(amount * 100),
                     Tax: "none" // Укажи соответствующую ставку НДС
                 }
             ]
@@ -52,7 +52,7 @@ exports.handler = async function (event) {
         // **Формируем запрос в Тинькофф**
         const tokenParams = {
             TerminalKey: terminalKey,
-            Amount: amount,
+            Amount: Math.round(amount * 100), // Сумма в копейках
             OrderId: orderId,
             Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
             NotificationURL: notificationUrl,
