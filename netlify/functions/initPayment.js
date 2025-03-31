@@ -41,7 +41,7 @@ exports.handler = async function (event) {
             }]
         };
 
-        // Формируем объект для подписи (ТОЛЬКО КОРНЕВЫЕ ПОЛЯ!)
+        // Формируем объект для подписи (ТОЛЬКО КОРНЕВЫЕ ПОЛЯ! + пароль)
         const tokenParams = {
             TerminalKey: terminalKey,
             Amount: Math.round(amount * 100).toString(),
@@ -49,7 +49,8 @@ exports.handler = async function (event) {
             Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
-            FailURL: failUrl
+            FailURL: failUrl,
+            Password: password  // Пароль из ЛК Тинькофф добавлен
         };
 
         // Генерация строки для подписи (ключи сортируем)
