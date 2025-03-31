@@ -10,7 +10,6 @@ exports.handler = async function (event) {
 
     try {
         const { amount, id } = JSON.parse(event.body);
-        
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
@@ -20,11 +19,15 @@ exports.handler = async function (event) {
 
         console.log("ID товара для оплаты:", id);
 
-        const terminalKey = "TinkoffBankTest"; 
-        const secretKey = "o2Pol35%Test"; 
+        const terminalKey = "1742653399078DEMO";
+        const secretKey = "o2Pol35%i5XuLogi";
         const orderId = Date.now().toString();
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
-        const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;
+
+        const hmacSecret = "abyrepp88p1113dsqwe";
+        const secureToken = crypto.createHmac("sha256", hmacSecret).update(id).digest("hex");
+
+        const successUrl = `https://info-products-360.netlify.app/success?id=${id}&token=${secureToken}`;
         const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
         const receipt = {
@@ -42,20 +45,19 @@ exports.handler = async function (event) {
 
         const tokenParams = {
             TerminalKey: terminalKey,
-            Amount: amount.toString(),
+            Amount: amount,
             OrderId: orderId,
             Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
-            NotificationURL: notificationUrl
+            NotificationURL: notificationUrl,
+            SuccessURL: successUrl,
+            FailURL: failUrl,
+            Password: secretKey
         };
 
-        const tokenString = Object.keys(tokenParams)
-            .sort()
-            .map(key => tokenParams[key])
-            .join("") + secretKey;
-
+        const sortedKeys = Object.keys(tokenParams).sort();
+        const tokenString = sortedKeys.map((key) => tokenParams[key]).join("") + secretKey;
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
-        console.log("Данные для подписи (tokenString):", tokenString);
         console.log("Generated Token:", token);
 
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
@@ -64,13 +66,12 @@ exports.handler = async function (event) {
             body: JSON.stringify({
                 ...tokenParams,
                 Token: token,
-                SuccessURL: successUrl,
-                FailURL: failUrl,
-                Receipt: receipt 
+                Receipt: receipt
             })
         });
 
         const result = await response.json();
+
         console.log("Ответ от Тинькофф:", result);
 
         if (result.Success) {
