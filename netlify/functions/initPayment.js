@@ -19,8 +19,8 @@ exports.handler = async function (event) {
 
         console.log("ID товара для оплаты:", id);
 
-        const terminalKey = "1742653399078DEMO";
-        const secretKey = "o2Pol35%i5XuLogi";
+        const terminalKey = "TinkoffBankTest";
+        const secretKey = "Test";
         const orderId = Date.now().toString();
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
 
