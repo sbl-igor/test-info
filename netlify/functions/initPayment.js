@@ -58,7 +58,7 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-            Receipt: JSON.stringify(receipt) // Корректно сериализуем Receipt
+            Receipt: receipt // Корректно сериализуем Receipt
         };
 
         // Генерируем токен SHA-256 для API Тинькофф с учетом Receipt
