@@ -9,13 +9,17 @@ exports.handler = async function (event) {
     }
 
     try {
-        const { amount, id, items } = JSON.parse(event.body);
+        const { amount, id, items = [] } = JSON.parse(event.body);
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
 
         if (!id) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректный ID товара" }) };
+        }
+
+        if (!Array.isArray(items) || items.length === 0) {
+            return { statusCode: 400, body: JSON.stringify({ error: "Некорректный список товаров" }) };
         }
 
         console.log("ID товара для оплаты:", id);
