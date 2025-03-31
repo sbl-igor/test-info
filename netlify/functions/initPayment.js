@@ -19,9 +19,9 @@ exports.handler = async function (event) {
 
         console.log("ID товара для оплаты:", id);
 
-        const terminalKey = "1742653399318";
-        const secretKey = "r30oaq%Dk#LyTH3f";
-        const password = "usaf8fw8fsw21g"; // Пароль из ЛК Тинькофф
+        const terminalKey = "1742653399078DEMO";  // Ваш TerminalKey
+        const secretKey = "o2Pol35%i5XuLogi";  // Ваш SecretKey
+        const password = "usaf8fw8fsw21g";  // Пароль из ЛК Тинькофф
         const orderId = Date.now().toString();
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
         
@@ -49,18 +49,18 @@ exports.handler = async function (event) {
             Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
-            FailURL: failUrl,
-            Password: password // Пароль участвует в подписи
+            FailURL: failUrl
         };
 
-        // Генерация токена SHA-256
+        // Генерация строки для подписи (ключи сортируем)
         const tokenString = Object.keys(tokenParams)
-            .sort()
-            .map((key) => tokenParams[key])
-            .join("") + secretKey;
-        
+            .sort()  // Сортируем ключи
+            .reduce((acc, key) => acc + tokenParams[key], "") + secretKey; // Объединяем значения и добавляем SecretKey
+
+        // Генерация токена SHA-256
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
+        console.log("Данные для подписи (tokenString):", tokenString);
         console.log("Generated Token:", token);
 
         // Отправляем запрос в Тинькофф
@@ -69,7 +69,7 @@ exports.handler = async function (event) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 ...tokenParams,
-                Token: token,
+                Token: token,  // Передаем токен
                 Receipt: receipt // Receipt передаем, но не включаем в токен
             })
         });
