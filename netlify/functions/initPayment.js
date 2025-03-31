@@ -13,65 +13,65 @@ exports.handler = async function (event) {
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
-
         if (!id) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректный ID товара" }) };
         }
 
         console.log("ID товара для оплаты:", id);
 
-        // **Настройки мерчанта**
-        const terminalKey = "1742653399078DEMO"; // Заменить на реальный TerminalKey
-        const secretKey = "o2Pol35%i5XuLogi"; // Заменить на реальный SecretKey
+        const terminalKey = "1742653399078DEMO";
+        const secretKey = "o2Pol35%i5XuLogi";
+        const password = "usaf8fw8fsw21g"; // Пароль из ЛК Тинькофф
         const orderId = Date.now().toString();
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
+        
+        const successUrl = `https://info-products-360.netlify.app/success?id=${id}`;
+        const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
-        // **Формируем объект Receipt**
         const receipt = {
             Email: "shokeator98@gmail.com",
             Phone: "+79244324908",
             Taxation: "usn_income",
-            Items: [
-                {
-                    Name: "Цифровой товар",
-                    Price: Math.round(amount * 100),
-                    Quantity: 1,
-                    Amount: Math.round(amount * 100),
-                    Tax: "none"
-                }
-            ]
+            Items: [{
+                Name: "Цифровой товар",
+                Price: Math.round(amount * 100),
+                Quantity: 1,
+                Amount: Math.round(amount * 100),
+                Tax: "none"
+            }]
         };
 
-        // **Формируем параметры для запроса**
-        const requestParams = {
+        // Формируем объект для подписи (ТОЛЬКО КОРНЕВЫЕ ПОЛЯ!)
+        const tokenParams = {
             TerminalKey: terminalKey,
-            Amount: Math.round(amount * 100).toString(), // Обязательно строка!
+            Amount: Math.round(amount * 100).toString(),
             OrderId: orderId,
             Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
-            NotificationURL: notificationUrl
+            NotificationURL: notificationUrl,
+            SuccessURL: successUrl,
+            FailURL: failUrl,
+            Password: password // Пароль участвует в подписи
         };
 
-        // **Формируем строку для токена (без Receipt!)**
-        const tokenString = Object.keys(requestParams)
+        // Генерация токена SHA-256
+        const tokenString = Object.keys(tokenParams)
             .sort()
-            .map((key) => requestParams[key])
+            .map((key) => tokenParams[key])
             .join("") + secretKey;
+        
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("Generated Token:", token);
 
-        // **Добавляем токен в запрос**
-        const requestBody = {
-            ...requestParams,
-            Token: token,
-            Receipt: receipt // Receipt добавляем, но не включаем в токен
-        };
-
-        // **Отправляем запрос в Тинькофф**
+        // Отправляем запрос в Тинькофф
         const response = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify({
+                ...tokenParams,
+                Token: token,
+                Receipt: receipt // Receipt передаем, но не включаем в токен
+            })
         });
 
         const result = await response.json();
