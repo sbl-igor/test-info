@@ -58,16 +58,11 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-            Receipt: receipt
+            Receipt: JSON.stringify(receipt) // Корректно сериализуем Receipt
         };
 
-        // Генерируем токен SHA-256 для API Тинькофф с учётом Receipt
-        const sortedKeys = Object.keys(tokenParams).sort();
-        const tokenString = sortedKeys.map((key) => {
-            if (key === "Receipt") return JSON.stringify(tokenParams[key]); // Receipt как JSON-строка
-            return tokenParams[key];
-        }).join("") + secretKey;
-
+        // Генерируем токен SHA-256 для API Тинькофф с учетом Receipt
+        const tokenString = Object.keys(tokenParams).sort().map((key) => tokenParams[key]).join("") + secretKey;
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("Generated Token:", token);
