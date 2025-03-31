@@ -9,17 +9,13 @@ exports.handler = async function (event) {
     }
 
     try {
-        const { amount, id, items = [] } = JSON.parse(event.body);
+        const { amount, id } = JSON.parse(event.body);
         if (!amount || amount <= 0) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректная сумма" }) };
         }
 
         if (!id) {
             return { statusCode: 400, body: JSON.stringify({ error: "Некорректный ID товара" }) };
-        }
-
-        if (!Array.isArray(items) || items.length === 0) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Некорректный список товаров" }) };
         }
 
         console.log("ID товара для оплаты:", id);
@@ -37,18 +33,20 @@ exports.handler = async function (event) {
         const successUrl = `https://info-products-360.netlify.app/success?id=${id}&token=${secureToken}`;
         const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
-        // **Формируем объект Receipt**
+        // **Упрощённый объект Receipt**
         const receipt = {
             Email: "shokeator98@gmail.com", // Замени на email покупателя
             Phone: "+79244324908", // Замени на телефон покупателя
             Taxation: "usn_income", // Система налогообложения
-            Items: items.map(item => ({
-                Name: item.name,
-                Price: item.price * 100,
-                Quantity: item.quantity,
-                Amount: item.price * item.quantity * 100,
-                Tax: "none" // Укажи соответствующую ставку НДС
-            }))
+            Items: [
+                {
+                    Name: "Цифровой товар", // Общее название
+                    Price: amount * 100,
+                    Quantity: 1,
+                    Amount: amount * 100,
+                    Tax: "none" // Укажи соответствующую ставку НДС
+                }
+            ]
         };
 
         // **Формируем запрос в Тинькофф**
