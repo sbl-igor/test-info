@@ -32,8 +32,8 @@ exports.handler = async function (event) {
         console.log("🛒 ID товара:", id);
 
         // 🔹 Константы и параметры
-        const terminalKey = "1742653399318";
-        const secretKey = "r30oaq%Dk#LyTH3f";
+        const terminalKey = "1742653399078DEMO";
+        const secretKey = "o2Pol35%i5XuLogi";
         const orderId = Date.now().toString();
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
 
@@ -67,12 +67,17 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-            Password: secretKey, // Только для генерации токена
+            // Password: secretKey, // Только для генерации токена
         };
 
-        // 🔹 Генерация токена
-        const sortedKeys = Object.keys(paymentParams).sort();
-        const tokenString = sortedKeys.map((key) => paymentParams[key]).join("") + secretKey;
+        // 🔐 Для генерации токена
+        const tokenParamsForHash = {
+            ...paymentParams,
+            Password: secretKey
+        };        
+
+        const sortedKeys = Object.keys(tokenParamsForHash).sort();
+        const tokenString = sortedKeys.map((key) => tokenParamsForHash[key]).join("") + secretKey;
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("🔐 Сгенерированный токен:", token);
@@ -84,7 +89,7 @@ exports.handler = async function (event) {
             body: JSON.stringify({
                 ...paymentParams,
                 Token: token,
-                Receipt: receipt,
+                Receipt: receipt            
             }),
         });
 
