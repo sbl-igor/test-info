@@ -54,8 +54,8 @@ exports.handler = async function (event) {
             }],
         };
 
-        // 🔐 Полный набор параметров, включая Receipt
-        const fullParams = {
+        // 🔐 Только необходимые параметры для токена (без Receipt)
+        const tokenParams = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
@@ -63,33 +63,29 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-            Receipt: receipt
-        };
-
-        // Генерация токена (важно: Receipt сериализуется в строку!)
-        const tokenParams = {
-            ...fullParams,
             Password: secretKey
         };
 
         const sortedKeys = Object.keys(tokenParams).sort();
-
-        const tokenString = sortedKeys.map(key => {
-            const value = tokenParams[key];
-            return typeof value === "object" ? JSON.stringify(value) : String(value);
-        }).join("");
-
+        const tokenString = sortedKeys.map((key) => tokenParams[key]).join("");
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("🔐 Сгенерированный токен:", token);
 
-        // 🔹 Отправка запроса в Tinkoff
+        // 🔹 Финальный запрос (токен без Receipt, но Receipt включен в тело)
         const tinkoffResponse = await fetch("https://securepay.tinkoff.ru/v2/Init", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                ...fullParams,
-                Token: token
+                TerminalKey: terminalKey,
+                Amount: amount,
+                OrderId: orderId,
+                Description: `Оплата товара ID: ${id}, заказ №${orderId}`,
+                NotificationURL: notificationUrl,
+                SuccessURL: successUrl,
+                FailURL: failUrl,
+                Token: token,
+                Receipt: receipt // передаем, но не используем в токене
             }),
         });
 
