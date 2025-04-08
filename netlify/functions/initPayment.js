@@ -12,7 +12,6 @@ exports.handler = async function (event) {
     }
 
     try {
-        // 🔹 Извлечение и проверка данных из запроса
         const { amount, id } = JSON.parse(event.body);
 
         if (!amount || amount <= 0) {
@@ -31,20 +30,17 @@ exports.handler = async function (event) {
 
         console.log("🛒 ID товара:", id);
 
-        // 🔹 Константы и параметры
         const terminalKey = "1742653399078DEMO";
         const secretKey = "o2Pol35%i5XuLogi";
         const orderId = Date.now().toString();
         const notificationUrl = "https://info-products-360.netlify.app/.netlify/functions/paymentCallback";
 
-        // HMAC-токен для SuccessURL
         const hmacSecret = "abyrepp88p1113dsqwe";
         const secureToken = crypto.createHmac("sha256", hmacSecret).update(id).digest("hex");
 
         const successUrl = `https://info-products-360.netlify.app/success?id=${id}&token=${secureToken}`;
         const failUrl = `https://info-products-360.netlify.app/fail?id=${id}`;
 
-        // 🔹 Чек для фискализации
         const receipt = {
             Email: "shokeator98@gmail.com",
             Phone: "+79244324908",
@@ -58,8 +54,8 @@ exports.handler = async function (event) {
             }],
         };
 
-        // 🔹 Подготовка параметров для генерации токена
-        const paymentParams = {
+        // 🔐 Полный набор параметров, включая Receipt
+        const fullParams = {
             TerminalKey: terminalKey,
             Amount: amount,
             OrderId: orderId,
@@ -67,17 +63,22 @@ exports.handler = async function (event) {
             NotificationURL: notificationUrl,
             SuccessURL: successUrl,
             FailURL: failUrl,
-            // Password: secretKey, // Только для генерации токена
+            Receipt: receipt
         };
 
-        // 🔐 Для генерации токена
-        const tokenParamsForHash = {
-            ...paymentParams,
+        // Генерация токена (важно: Receipt сериализуется в строку!)
+        const tokenParams = {
+            ...fullParams,
             Password: secretKey
-        };        
+        };
 
-        const sortedKeys = Object.keys(tokenParamsForHash).sort();
-        const tokenString = sortedKeys.map((key) => tokenParamsForHash[key]).join("") + secretKey;
+        const sortedKeys = Object.keys(tokenParams).sort();
+
+        const tokenString = sortedKeys.map(key => {
+            const value = tokenParams[key];
+            return typeof value === "object" ? JSON.stringify(value) : String(value);
+        }).join("");
+
         const token = crypto.createHash("sha256").update(tokenString).digest("hex");
 
         console.log("🔐 Сгенерированный токен:", token);
@@ -87,16 +88,14 @@ exports.handler = async function (event) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                ...paymentParams,
-                Token: token,
-                Receipt: receipt            
+                ...fullParams,
+                Token: token
             }),
         });
 
         const result = await tinkoffResponse.json();
         console.log("📦 Ответ от Tinkoff:", result);
 
-        // 🔹 Возврат ссылки на оплату или сообщение об ошибке
         if (result.Success) {
             return {
                 statusCode: 200,
