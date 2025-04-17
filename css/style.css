@@ -531,7 +531,6 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 35px;
 }
 
 .footer-logo-nav__nav {
@@ -568,12 +567,52 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
 }
 
 .footer-description {
-    width: 55%;
+    width: 100%;
     font-size: 26px;
     position: relative;
     z-index: 2;
+    text-align: center;
 }
 
+.footer-description__text {
+    font-size: 14px;
+}
+
+.footer-logo-details {
+    text-align: center;
+    margin: 30px 0;
+    color: #f9f9f9;
+}
+
+.footer-logo-details__title {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.footer-logo-details__title-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 14px;
+}
+
+.footer-logo-copyright__title {
+    text-align: center;
+}
+
+.footer-logo-copyright__list {
+    padding: 15px 0;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+    display: flex;
+    position: relative;
+    z-index: 10;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+    color: #e8e5e5;
+}
 /* CATALOG_PAGE */
 
 .header-catalog-section, .header-services-section {
@@ -599,6 +638,11 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     align-self: self-end;
     font-size: 40px;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.footer-logo-nav, .footer-logo-details, .footer-logo-copyright {
+    position: relative;
+    z-index: 10;
 }
 
 /* CATALOG_PAGE consultations */
