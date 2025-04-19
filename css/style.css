@@ -1294,6 +1294,15 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     margin: 100px 0 150px;
 }
 
+#buy-label {
+    margin-bottom: 30px;
+}
+
+#accept-offer {
+    width: 20px;
+    height: 20px;
+}
+
 /* About-us */
 
 .img-main-ab-cont {
@@ -1369,4 +1378,13 @@ ul.advantages-cards__item-list, ul.advantages-cards__item-list li {
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+}
+
+.formatted-text-pagesproduction {
+    white-space: pre-wrap;
+}
+
+.title-pagesproduction {
+    margin: 20px auto;
+    font-size: 24px;
 }

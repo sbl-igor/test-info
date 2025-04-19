@@ -425,3 +425,26 @@ async function initiatePayment(productId) {
 document.addEventListener("DOMContentLoaded", () => {
     displayProduct();  // Отображаем товар после загрузки страницы
 });
+
+function showForm(button) {
+    // Скрываем кнопку и показываем форму
+    const formContainer = document.getElementById("payment-form-container");
+    formContainer.style.display = 'block';
+
+    // Скрываем кнопку "Купить"
+    button.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const checkbox = document.getElementById('accept-offer');
+    const button = document.getElementById('buy-button');
+  
+    // Устанавливаем изначально: кнопка отключена и затемнена
+    button.disabled = true;
+    button.style.opacity = 0.4;
+  
+    checkbox.addEventListener('change', function () {
+      button.disabled = !checkbox.checked;
+      button.style.opacity = checkbox.checked ? 1 : 0.4;
+    });
+  });
